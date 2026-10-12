@@ -1,0 +1,46 @@
+<!doctype html>
+<html lang="bn">
+<head>
+<meta charset="utf-8">
+<title>শিক্ষক পরিচিতি</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Hind+Siliguri:wght@400;600;700&amp;family=Shippori+Mincho:wght@600;800&amp;display=swap">
+<style>
+body{margin:0}
+a{color:#a13f60}a:hover{color:#7d2f4a}
+</style>
+</helmet>
+<div style="width: 1080px; height: 1350px; box-sizing: border-box; background: #ffffff; font-family: 'Hind Siliguri', sans-serif; color: #1b2745; display: flex; flex-direction: column; padding: 84px 80px 72px">
+<div style="font-size: 26px; font-weight: 700; letter-spacing: 0.12em; color: #a13f60">さくら日本語学院 · 先生紹介</div>
+<h1 style="margin: 30px 0 0; font-size: 80px; line-height: 1.2; font-weight: 700">যারা পড়াবেন</h1>
+<p style="margin: 14px 0 0; font-size: 32px; color: #5b6478">জাপানে পড়াশোনা ও জীবনের সরাসরি অভিজ্ঞতা</p>
+<div style="margin-top: 50px; display: flex; flex-direction: column; gap: 26px; flex: 1">
+<div style="display: flex; gap: 32px; align-items: center; background: #fcf3f6; border-radius: 28px; padding: 30px 34px">
+<div style="width: 170px; height: 170px; flex: none; border-radius: 50%; background: {{accent}}; color: #ffffff; display: flex; align-items: center; justify-content: center; font-size: 26px; font-weight: 600; text-align: center">[ছবি]</div>
+<div style="display: flex; flex-direction: column; gap: 6px"><div style="font-size: 26px; font-weight: 700; color: #a13f60">প্রধান শিক্ষক · 主任講師</div><div style="font-size: 44px; font-weight: 700">জাশিম আইমান জারিন</div><div style="font-size: 27px; line-height: 1.45; color: #5b6478">২০০৮ থেকে জাপানে। দ্বিতীয় শ্রেণি থেকে কলেজ পর্যন্ত জাপানের স্কুলে পড়াশোনা।</div></div>
+</div>
+<div style="display: flex; gap: 32px; align-items: center; background: #fcf3f6; border-radius: 28px; padding: 30px 34px">
+<div style="width: 170px; height: 170px; flex: none; border-radius: 50%; background: #2c3e8f; color: #ffffff; display: flex; align-items: center; justify-content: center; font-size: 26px; font-weight: 600; text-align: center">[ছবি]</div>
+<div style="display: flex; flex-direction: column; gap: 6px"><div style="font-size: 26px; font-weight: 700; color: #2c3e8f">পরিচালক · 代表</div><div style="font-size: 44px; font-weight: 700">আহমেদ সায়েম</div><div style="font-size: 27px; line-height: 1.45; color: #5b6478">জাপানের ভাষা স্কুলে ২ বছর পড়ে এখন জাপানের বিশ্ববিদ্যালয়ে অধ্যয়নরত। আমাদের বইয়ের লেখক।</div></div>
+</div>
+<div style="display: flex; gap: 32px; align-items: center; background: #fcf3f6; border-radius: 28px; padding: 30px 34px">
+<div style="width: 170px; height: 170px; flex: none; border-radius: 50%; background: #1f857a; color: #ffffff; display: flex; align-items: center; justify-content: center; font-size: 26px; font-weight: 600; text-align: center">[ছবি]</div>
+<div style="display: flex; flex-direction: column; gap: 6px"><div style="font-size: 26px; font-weight: 700; color: #1f857a">উপ-পরিচালক · 副代表</div><div style="font-size: 44px; font-weight: 700">হাসান এমডি নাজমুল</div><div style="font-size: 27px; line-height: 1.45; color: #5b6478">JLPT N2। জাপানে বসবাস করে কথোপকথন ও ইন্টারভিউ শেখান।</div></div>
+</div>
+</div>
+<div style="margin-top: 36px; font-size: 28px; display: flex; justify-content: space-between"><span style="font-weight: 700">নারায়ণগঞ্জে ক্লাস, জাপান থেকে অনলাইন সাপোর্ট</span><span style="color: #a13f60; font-weight: 700">さくら</span></div>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"accent":{"editor":"color","default":"#c4577a","options":["#c4577a","#a13f60","#b9821a"]},"$preview":{"width":1080,"height":1350}}'>
+class Component extends DCLogic {
+  renderVals() {
+    return { accent: this.props.accent ?? '#c4577a' };
+  }
+}
+</script>
+</body>
+</html>

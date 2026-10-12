@@ -19,3 +19,15 @@
 
 ## Editing
 To fix a mistake: change the text in `dataN.js`, rebuild the HTML, and run `build_pdf.py` again.
+
+## Teaching & admission apps (`apps/`)
+| File | What it is |
+|---|---|
+| `slides.html` | Projector slides for every N5/N4 lesson, generated from the book data, with teacher notes |
+| `practice.html` | Student app: listening (3 speeds, shadowing), listening quiz, vocab/kanji flashcards with spaced review, teacher progress panel |
+| `admission.html` | Courses and fees, online application, 20-question level test, teacher list of applicants |
+
+`slides.src.html` and `practice.src.html` are the sources. After changing a book: `node books.js.mjs` (collects both books into `books.json`), then `python3 build.py slides.src.html practice.src.html`.
+
+## Facebook posts (`facebook/`)
+Six 1080×1350 post designs (Design canvas files) with Bangla captions in `canvas.json` notes.

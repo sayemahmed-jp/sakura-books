@@ -1,0 +1,38 @@
+<!doctype html>
+<html lang="bn">
+<head>
+<meta charset="utf-8">
+<title>জাপানে যাওয়ার পথ</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Hind+Siliguri:wght@400;600;700&amp;family=Shippori+Mincho:wght@600;800&amp;display=swap">
+<style>
+body{margin:0}
+a{color:#a13f60}a:hover{color:#7d2f4a}
+</style>
+</helmet>
+<div style="width: 1080px; height: 1350px; box-sizing: border-box; background: #1b2745; font-family: 'Hind Siliguri', sans-serif; color: #ffffff; display: flex; flex-direction: column; padding: 84px 80px 72px">
+<div style="font-size: 26px; font-weight: 700; letter-spacing: 0.12em; color: #f2a9c0">さくら日本語学院</div>
+<h1 style="margin: 30px 0 0; font-size: 84px; line-height: 1.2; font-weight: 700">জাপানে পড়তে<br>যাওয়ার পথ</h1>
+<div style="margin-top: 56px; display: flex; flex-direction: column; gap: 0; flex: 1">
+<div style="display: flex; gap: 30px; align-items: flex-start"><div style="display: flex; flex-direction: column; align-items: center"><div style="width: 76px; height: 76px; border-radius: 50%; background: {{accent}}; display: flex; align-items: center; justify-content: center; font-size: 36px; font-weight: 700">১</div><div style="width: 4px; height: 66px; background: #3c4a75"></div></div><div style="padding-top: 6px"><div style="font-size: 42px; font-weight: 700">N5 কোর্স · ৩ মাস</div><div style="font-size: 27px; color: #c9cfe3">হিরাগানা থেকে শুরু, ১০৪টি কাঞ্জি, মৌলিক ব্যাকরণ</div></div></div>
+<div style="display: flex; gap: 30px; align-items: flex-start"><div style="display: flex; flex-direction: column; align-items: center"><div style="width: 76px; height: 76px; border-radius: 50%; background: {{accent}}; display: flex; align-items: center; justify-content: center; font-size: 36px; font-weight: 700">২</div><div style="width: 4px; height: 66px; background: #3c4a75"></div></div><div style="padding-top: 6px"><div style="font-size: 42px; font-weight: 700">N4 কোর্স · ৩ মাস</div><div style="font-size: 27px; color: #c9cfe3">মোট ৩০০ ঘণ্টা, ৮০% উপস্থিতি, ইন্টারভিউ অনুশীলন</div></div></div>
+<div style="display: flex; gap: 30px; align-items: flex-start"><div style="display: flex; flex-direction: column; align-items: center"><div style="width: 76px; height: 76px; border-radius: 50%; background: {{accent}}; display: flex; align-items: center; justify-content: center; font-size: 36px; font-weight: 700">৩</div><div style="width: 4px; height: 66px; background: #3c4a75"></div></div><div style="padding-top: 6px"><div style="font-size: 42px; font-weight: 700">JLPT বা NAT-TEST</div><div style="font-size: 27px; color: #c9cfe3">মক টেস্টে নিয়মিত প্রস্তুতি</div></div></div>
+<div style="display: flex; gap: 30px; align-items: flex-start"><div style="display: flex; flex-direction: column; align-items: center"><div style="width: 76px; height: 76px; border-radius: 50%; background: {{accent}}; display: flex; align-items: center; justify-content: center; font-size: 36px; font-weight: 700">৪</div><div style="width: 4px; height: 66px; background: #3c4a75"></div></div><div style="padding-top: 6px"><div style="font-size: 42px; font-weight: 700">জাপানের ভাষা স্কুলে আবেদন</div><div style="font-size: 27px; color: #c9cfe3">সঠিক ও যাচাই করা কাগজপত্র, কোনো ভুয়া কাগজ নয়</div></div></div>
+<div style="display: flex; gap: 30px; align-items: flex-start"><div style="width: 76px; height: 76px; flex: none; border-radius: 50%; background: #ffffff; color: #1b2745; display: flex; align-items: center; justify-content: center; font-family: 'Shippori Mincho', serif; font-size: 34px; font-weight: 800">日</div><div style="padding-top: 6px"><div style="font-size: 42px; font-weight: 700">জাপান</div><div style="font-size: 27px; color: #c9cfe3">যাওয়ার আগে জীবনযাপনের নিয়ম নিয়ে ওরিয়েন্টেশন</div></div></div>
+</div>
+<div style="margin-top: 30px; display: flex; justify-content: space-between; align-items: center; font-size: 28px"><span>স্বচ্ছ খরচ, সব লিখিতভাবে</span><span style="background: {{accent}}; border-radius: 999px; padding: 10px 26px; font-weight: 700">প্রথম ৩ ক্লাস ফ্রি</span></div>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"accent":{"editor":"color","default":"#c4577a","options":["#c4577a","#d4932a","#2e9e8f"]},"$preview":{"width":1080,"height":1350}}'>
+class Component extends DCLogic {
+  renderVals() {
+    return { accent: this.props.accent ?? '#c4577a' };
+  }
+}
+</script>
+</body>
+</html>

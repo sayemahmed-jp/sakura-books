@@ -1,0 +1,241 @@
+<title>さくら入学案内</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Hind+Siliguri:wght@400;500;600;700&family=Noto+Sans+JP:wght@400;500;700&family=Shippori+Mincho:wght@600;800&display=swap">
+<style>
+/* Layout: an admission booklet in one column: course facts, then a stepped application with an optional level test; sakura palette, light by design */
+:root{
+  --bg:#fcf6f8; --paper:#ffffff; --ink:#1b2745; --muted:#5b6478; --line:#eedfe5;
+  --sakura:#c4577a; --sakura-deep:#a13f60; --sakura-soft:#f8e4eb; --blush:#fdeef3;
+  --ai:#2c3e8f; --ai-soft:#e8ebf8; --gold:#b9821a; --gold-soft:#fbf0d9;
+  --ok:#2e7d5b; --ok-soft:#e1f2e9; --ng:#b3261e; --ng-soft:#fbe7e5;
+  --f-display:"Shippori Mincho","Hiragino Mincho ProN","Yu Mincho",serif;
+  --f-jp:"Noto Sans JP","Hiragino Sans","Yu Gothic","Hind Siliguri",sans-serif;
+  --f-bn:"Hind Siliguri","Noto Sans Bengali","Noto Sans JP",system-ui,sans-serif;
+  color-scheme:light;
+}
+*{box-sizing:border-box}
+body{background:var(--bg);color:var(--ink);font-family:var(--f-bn);font-size:16px;line-height:1.65;margin:0}
+button,select,input,textarea{font:inherit;color:inherit}
+button{cursor:pointer}
+:focus-visible{outline:2px solid var(--sakura);outline-offset:2px}
+.jp{font-family:var(--f-jp)}
+h1,h2,h3{text-wrap:balance;margin:0}
+.wrap{max-width:760px;margin:0 auto;padding-inline:16px;padding-block:0 64px}
+.top{position:sticky;top:env(safe-area-inset-top,0px);z-index:5;background:rgba(255,255,255,.94);backdrop-filter:blur(8px);border-bottom:1px solid var(--line)}
+.top-in{max-width:760px;margin:0 auto;padding:10px 16px;display:flex;align-items:center;gap:10px}
+.brand{font-family:var(--f-display);font-weight:800;font-size:19px;display:flex;align-items:center;gap:6px}
+.link{margin-left:auto;background:none;border:0;color:var(--sakura-deep);font-weight:700;font-size:14px}
+.hero{padding-block:30px 10px;display:grid;gap:10px}
+.kick{font-size:13px;letter-spacing:.12em;color:var(--sakura-deep);font-weight:700}
+.hero h1{font-family:var(--f-display);font-size:clamp(32px,8vw,50px);line-height:1.2;font-weight:800}
+.hero p{color:var(--muted);margin:0;max-width:60ch}
+.h2{font-size:22px;font-weight:700;margin-block:30px 12px}
+.facts{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:10px}
+.fact{background:var(--paper);border:1px solid var(--line);border-radius:14px;padding:12px 14px}
+.fact b{display:block;font-size:13px;color:var(--muted);font-weight:600}
+.fact span{font-size:17px;font-weight:600}
+.tw{overflow-x:auto;background:var(--paper);border:1px solid var(--line);border-radius:14px}
+table{border-collapse:collapse;width:100%;min-width:480px;font-size:15px}
+th,td{padding:10px 12px;border-bottom:1px solid var(--line);text-align:left;vertical-align:top}
+th{background:var(--blush);font-size:13px}
+td.n{font-variant-numeric:tabular-nums;white-space:nowrap;font-weight:700}
+.note{font-size:14px;color:var(--muted)}
+.steps{display:flex;gap:6px;margin-block:8px 14px;flex-wrap:wrap}
+.step{font-size:13px;font-weight:700;padding:4px 12px;border-radius:999px;background:var(--sakura-soft);color:var(--sakura-deep)}
+.step[aria-current="true"]{background:var(--sakura);color:#fff}
+.card{background:var(--paper);border:1px solid var(--line);border-radius:18px;padding:18px}
+.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(230px,1fr));gap:12px 16px}
+.f{display:grid;gap:4px;min-width:0}
+.f label,.f legend{font-size:14px;font-weight:700}
+.f small{color:var(--muted);font-size:12px}
+.f input,.f select,.f textarea{border:1.5px solid var(--line);border-radius:10px;padding:9px 11px;background:var(--paper);width:100%}
+.f textarea{min-height:80px;resize:vertical}
+fieldset{border:0;padding:0;margin:0}
+.chips{display:flex;flex-wrap:wrap;gap:6px}
+.chips label{display:inline-flex;align-items:center;gap:6px;border:1.5px solid var(--line);border-radius:999px;padding:5px 12px;font-weight:500;font-size:14px;cursor:pointer;background:var(--paper)}
+.chips input{accent-color:var(--sakura);width:auto}
+.chips label:has(input:checked){border-color:var(--sakura);background:var(--blush)}
+.req{color:var(--sakura)}
+.err{color:var(--ng);font-size:14px;font-weight:600}
+.btn{border:0;border-radius:12px;padding:12px 20px;font-weight:700;background:var(--sakura);color:#fff}
+.btn.ghost{background:var(--sakura-soft);color:var(--sakura-deep)}
+.btn.line{background:var(--paper);border:1.5px solid var(--line);color:var(--ink)}
+.btn.sm{padding:6px 12px;font-size:14px}
+.row{display:flex;gap:10px;flex-wrap:wrap;align-items:center}
+.q{display:grid;gap:8px;margin-bottom:18px}
+.qn{font-size:13px;color:var(--muted);font-weight:600}
+.qq{font-family:var(--f-jp);font-size:20px;line-height:1.7}
+.opts{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:8px}
+.opt{border:1.5px solid var(--line);background:var(--paper);border-radius:12px;padding:9px 12px;text-align:left;font-family:var(--f-jp);font-size:17px}
+.opt[aria-pressed="true"]{border-color:var(--sakura);background:var(--blush);font-weight:700}
+.meter{height:8px;background:var(--sakura-soft);border-radius:99px;overflow:hidden}
+.meter i{display:block;height:100%;background:var(--sakura)}
+.result{background:var(--ok-soft);border-radius:14px;padding:14px 16px}
+.result b{font-size:19px}
+.pre{white-space:pre-wrap;font-size:14px;background:var(--blush);border-radius:12px;padding:12px;max-height:300px;overflow:auto}
+.pill{display:inline-block;font-size:12px;font-weight:700;border-radius:999px;padding:2px 10px;background:var(--sakura-soft);color:var(--sakura-deep);white-space:nowrap}
+.pill.new{background:var(--sakura);color:#fff}.pill.done{background:var(--ok-soft);color:var(--ok)}.pill.no{background:#eee;color:var(--muted)}
+.app{display:grid;gap:6px;border-bottom:1px solid var(--line);padding-block:12px}
+.app:last-child{border-bottom:0}
+.app .meta{font-size:14px;color:var(--muted)}
+.app select{border:1.5px solid var(--line);border-radius:8px;padding:4px 8px;background:var(--paper)}
+.sel{user-select:all;font-variant-numeric:tabular-nums}
+</style>
+
+<header class="top"><div class="top-in"><div class="brand"><span id="logo"></span>さくら日本語学院</div><button type="button" class="link" id="tLink" hidden>শিক্ষক প্যানেল</button></div></header>
+<main class="wrap" id="app"></main>
+
+<script>
+/* School facts: edit here when details change */
+const SCHOOL={
+  wa:"+81 70-9222-2401", waDigits:"817092222401",
+  address:"চর বক্তাবলী, ফতুল্লা, নারায়ণগঞ্জ",
+  opening:"২০২৬ (উদ্বোধনের প্রস্তুতি চলছে)",
+  web:"sayemahmed-jp.github.io/sakura-japanese-institute"
+};
+const COURSES=[
+  ["N5 কোর্স","৩ মাস · ১৫০ ঘণ্টা","হিরাগানা-কাতাকানা থেকে শুরু, ~১০০ কাঞ্জি, মৌলিক ব্যাকরণ ও আত্মপরিচয়","২০,০০০ টাকা"],
+  ["N4 কোর্স","৩ মাস · ১৫০ ঘণ্টা","~৩০০ কাঞ্জি, দৈনন্দিন কথোপকথন, জাপানের স্কুলের ইন্টারভিউ অনুশীলন","২০,০০০ টাকা"],
+  ["N3 কোর্স (ঐচ্ছিক)","৪ মাস · ১৫০ ঘণ্টা","মধ্যম স্তরের পড়া ও শোনা, ~৬৫০ কাঞ্জি","২২,০০০ টাকা"],
+  ["N5 + N4 প্যাকেজ","৬ মাস · ৩০০ ঘণ্টা","জাপানে পড়তে যাওয়ার জন্য প্রয়োজনীয় পুরো প্রস্তুতি","৩৫,০০০ টাকা"],
+  ["N5 + N4 + N3 প্যাকেজ","১০ মাস · ৪৫০ ঘণ্টা","সবচেয়ে মজবুত ভিত্তি","৪৫,০০০ টাকা"]
+];
+/* Level test: correct answer always first; shown shuffled. band: k=kana, 5=N5, 4=N4 */
+const TEST=[
+ {b:"k",q:"「さくら」 — এর উচ্চারণ কোনটি?",c:["sakura","sakuro","sakira","sukura"]},
+ {b:"k",q:"「ね」 কোন অক্ষর?",c:["ne","re","wa","nu"]},
+ {b:"k",q:"「ko」 হিরাগানায় কোনটি?",c:["こ","い","に","た"]},
+ {b:"k",q:"「コーヒー」 শব্দটি কী?",c:["কফি","কুকি","কপি","কেক"]},
+ {b:"k",q:"「きって」 আর 「きて」-এর পার্থক্য কী দিয়ে?",c:["ছোট っ","ছোট ゃ","゛ চিহ্ন","লম্বা স্বর"]},
+ {b:"5",q:"わたし（　）がくせいです。",c:["は","を","に","で"]},
+ {b:"5",q:"これは だれ（　）ほんですか。",c:["の","が","へ","と"]},
+ {b:"5",q:"「山」 の よみかた",c:["やま","かわ","うみ","そら"]},
+ {b:"5",q:"まいあさ 7じ（　）おきます。",c:["に","で","を","が"]},
+ {b:"5",q:"きのう えいがを（　）。",c:["みました","みます","みません","みましょう"]},
+ {b:"5",q:"へやに ねこが（　）。",c:["います","あります","します","きます"]},
+ {b:"5",q:"「いっしょに たべませんか。」「ええ、（　）。」",c:["たべましょう","たべません","たべました","たべてください"]},
+ {b:"5",q:"ここで しゃしんを とって（　）いいですか。",c:["も","は","が","に"]},
+ {b:"4",q:"日本語が 話せる（　）なりました。",c:["ように","ために","のに","ので"]},
+ {b:"4",q:"雨が ふり（　）ですね。かさを 持って 行きましょう。",c:["そう","よう","らしい","みたい"]},
+ {b:"4",q:"友だちに 引っ越しを 手伝って（　）。",c:["もらいました","あげました","くれました","さしあげました"]},
+ {b:"4",q:"電車の 中で 足を ふま（　）。",c:["れました","せました","ました","ないました"]},
+ {b:"4",q:"「試験」 の よみかた",c:["しけん","じけん","しげん","しっけん"]},
+ {b:"4",q:"先生は 何時に（　）か。",c:["いらっしゃいます","まいります","うかがいます","おります"]},
+ {b:"4",q:"時間が（　）、いっしょに 行きましょう。",c:["あれば","あると","あっても","あるのに"]}
+];
+const $=s=>document.querySelector(s);
+const esc=s=>String(s??"").replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
+const bn=n=>String(n).replace(/\d/g,d=>"০১২৩৪৫৬৭৮৯"[d]);
+function hash(s){let h=2166136261;for(const ch of s){h^=ch.charCodeAt(0);h=Math.imul(h,16777619)}return h>>>0}
+function order(id,n){let a=hash(id)||1;const idx=[...Array(n).keys()];for(let i=n-1;i>0;i--){a=(Math.imul(a,1103515245)+12345)>>>0;const j=a%(i+1);[idx[i],idx[j]]=[idx[j],idx[i]]}return idx}
+const store={get(k,d){try{const v=localStorage.getItem("sa."+k);return v==null?d:JSON.parse(v)}catch(e){return d}},set(k,v){try{localStorage.setItem("sa."+k,JSON.stringify(v))}catch(e){}}};
+const LOGO=sz=>{let p='';for(let i=0;i<5;i++)p+=`<path transform="rotate(${i*72})" d="M0 -2.5 C-6.5 -7 -7.5 -14 -4 -18 L0 -15 L4 -18 C7.5 -14 6.5 -7 0 -2.5Z"/>`;return `<svg width="${sz}" height="${sz}" viewBox="-20 -20 40 40" aria-hidden="true"><g fill="var(--sakura)">${p}</g><circle r="3" fill="var(--ink)"/></svg>`};
+$("#logo").innerHTML=LOGO(24);
+
+const FIELDS={name:"নাম",phone:"মোবাইল নম্বর",wa:"WhatsApp",email:"ইমেইল",age:"বয়স",edu:"সর্বোচ্চ শিক্ষা",eduYear:"পাসের সাল",area:"এলাকা",time:"ক্লাসের সময়",course:"কোর্স",exp:"জাপানি জানা আছে",goal:"লক্ষ্য",heard:"কীভাবে জানলেন",msg:"বার্তা"};
+let S={view:"info",form:store.get("draft",{}),err:"",step:1,test:{ans:{},done:false},sent:null,teacher:false};
+const cap={db:null,uid:null,canEdit:false};let APPS=null,unsub=null;
+
+function placement(ans){let k=0,f=0,g=0;TEST.forEach((t,i)=>{if(ans[i]===0){if(t.b==="k")k++;else if(t.b==="5")f++;else g++}});
+  let rec;if(k<4)rec="N5 কোর্স, শুরু থেকে (হিরাগানা দিয়ে)";else if(f<6)rec="N5 কোর্স";else if(g<5)rec="N4 কোর্স (N5 রিভিউসহ)";else rec="N3 কোর্স বা N4-এর শেষ অংশ (শিক্ষকের সাথে কথা বলুন)";
+  return {k,f,g,total:k+f+g,rec}}
+
+function vInfo(){return `<section class="hero"><div class="kick">さくら日本語学院 · SAKURA JAPANESE INSTITUTE</div><h1>জাপানি শিখুন, জাপানের পথে এগিয়ে যান</h1><p>নারায়ণগঞ্জে আধুনিক জাপানি ভাষা শিক্ষা: নিজস্ব বাংলা ব্যাখ্যার বই, প্রজেক্টরে ক্লাস, অনলাইন মক টেস্ট আর প্রতিদিনের প্র্যাকটিস অ্যাপ। শিক্ষকরা জাপানে পড়াশোনা ও কাজ করা অভিজ্ঞ বাংলাদেশি।</p><div class="row" style="margin-top:6px"><button type="button" class="btn" data-go="form">ভর্তির আবেদন করুন</button><button type="button" class="btn ghost" data-go="test">লেভেল টেস্ট দিন</button></div></section>
+<h2 class="h2">এক নজরে</h2><div class="facts">
+<div class="fact"><b>ঠিকানা</b><span>${esc(SCHOOL.address)}</span></div>
+<div class="fact"><b>ক্লাস</b><span>সপ্তাহে ৬ দিন (শনি–বৃহস্পতি), দিনে ২ ঘণ্টা</span></div>
+<div class="fact"><b>ব্যাচ</b><span>সকাল · সন্ধ্যা · অনলাইন</span></div>
+<div class="fact"><b>ক্লাসের আকার</b><span>সর্বোচ্চ ২০ জন</span></div>
+<div class="fact"><b>খোলা</b><span>${esc(SCHOOL.opening)}</span></div>
+<div class="fact"><b>যোগাযোগ (WhatsApp)</b><span class="sel">${esc(SCHOOL.wa)}</span></div></div>
+<h2 class="h2">কোর্স ও ফি</h2><div class="tw"><table><thead><tr><th>কোর্স</th><th>সময়</th><th>কী শিখবেন</th><th>ফি</th></tr></thead><tbody>${COURSES.map(c=>`<tr><td><b>${c[0]}</b></td><td>${c[1]}</td><td>${c[2]}</td><td class="n">${c[3]}</td></tr>`).join("")}</tbody></table></div>
+<p class="note">প্রথম ৩টি ক্লাস বিনামূল্যে। কোর্স শুরুর ৩ দিন আগে বাতিল করলে ৮০% ফেরত। জাপানে পড়তে যেতে চাইলে N5 আর N4 মিলিয়ে কমপক্ষে ৬ মাস (৩০০ ঘণ্টা) ও ৮০% উপস্থিতি লাগবে।</p>
+<h2 class="h2">ভর্তির ধাপ</h2><ol style="padding-left:20px;margin:0;display:grid;gap:6px"><li>অনলাইনে আবেদন ফর্ম পূরণ করুন (৩ মিনিট)।</li><li>আগে থেকে জাপানি জানলে ১০ মিনিটের লেভেল টেস্ট দিন, আমরা সঠিক ব্যাচ বলে দেব।</li><li>আমরা ফোন বা WhatsApp-এ যোগাযোগ করব, তারপর ৩টি ফ্রি ক্লাসে আসুন।</li><li>ভালো লাগলে ভর্তি ফি দিয়ে কোর্স শুরু।</li></ol>`}
+
+function chips(name,opts,type="radio"){const v=S.form[name];return `<div class="chips">${opts.map(o=>`<label><input type="${type}" name="${name}" value="${esc(o)}" ${type==="radio"?(v===o?"checked":""):((v||[]).includes(o)?"checked":"")}>${esc(o)}</label>`).join("")}</div>`}
+function vForm(){const F=S.form;const exp=F.exp;
+  return `<h2 class="h2">ভর্তির আবেদন</h2><div class="steps"><span class="step" aria-current="true">১. তথ্য</span><span class="step">২. লেভেল টেস্ট (ঐচ্ছিক)</span><span class="step">৩. জমা</span></div>
+<form class="card" id="appForm" novalidate><div class="grid">
+<div class="f"><label for="f-name">নাম <span class="req">*</span></label><input id="f-name" name="name" autocomplete="name" value="${esc(F.name)}"></div>
+<div class="f"><label for="f-phone">মোবাইল নম্বর <span class="req">*</span></label><input id="f-phone" name="phone" inputmode="tel" autocomplete="tel" placeholder="01XXXXXXXXX" value="${esc(F.phone)}"></div>
+<div class="f"><label for="f-wa">WhatsApp নম্বর</label><input id="f-wa" name="wa" inputmode="tel" placeholder="মোবাইলের মতো হলে খালি রাখুন" value="${esc(F.wa)}"></div>
+<div class="f"><label for="f-email">ইমেইল</label><input id="f-email" name="email" type="email" autocomplete="email" value="${esc(F.email)}"></div>
+<div class="f"><label for="f-age">বয়স <span class="req">*</span></label><input id="f-age" name="age" inputmode="numeric" value="${esc(F.age)}"></div>
+<div class="f"><label for="f-area">এলাকা / জেলা</label><input id="f-area" name="area" placeholder="যেমন: ফতুল্লা, নারায়ণগঞ্জ" value="${esc(F.area)}"></div>
+<div class="f"><label for="f-edu">সর্বোচ্চ শিক্ষা <span class="req">*</span></label><select id="f-edu" name="edu">${["","SSC / দাখিল","HSC / আলিম / ডিপ্লোমা","স্নাতক (অনার্স/ডিগ্রি)","স্নাতকোত্তর","অন্যান্য"].map(o=>`<option ${F.edu===o?"selected":""} value="${esc(o)}">${o||"বেছে নিন"}</option>`).join("")}</select></div>
+<div class="f"><label for="f-eduYear">পাসের সাল</label><input id="f-eduYear" name="eduYear" inputmode="numeric" placeholder="যেমন: 2024" value="${esc(F.eduYear)}"><small>জাপানে পড়তে যেতে HSC বা তার বেশি লাগে।</small></div>
+</div>
+<fieldset class="f" style="margin-top:14px"><legend>কোন কোর্স? <span class="req">*</span></legend>${chips("course",COURSES.map(c=>c[0]).concat(["এখনো ঠিক করিনি"]))}</fieldset>
+<fieldset class="f" style="margin-top:12px"><legend>কোন সময়ের ব্যাচ? <span class="req">*</span></legend>${chips("time",["সকাল","সন্ধ্যা","অনলাইন"])}</fieldset>
+<fieldset class="f" style="margin-top:12px"><legend>জাপানি কতটুকু জানেন? <span class="req">*</span></legend>${chips("exp",["একদম নতুন","হিরাগানা/কাতাকানা পারি","N5 পড়েছি","N4 পড়েছি","N3 বা বেশি"])}</fieldset>
+<fieldset class="f" style="margin-top:12px"><legend>জাপানি শেখার লক্ষ্য</legend>${chips("goal",["জাপানে পড়াশোনা","জাপানে চাকরি (SSW/টেকনিক্যাল)","JLPT পাস","শখ"],"checkbox")}</fieldset>
+<fieldset class="f" style="margin-top:12px"><legend>আমাদের কথা কীভাবে জানলেন?</legend>${chips("heard",["Facebook","বন্ধু/আত্মীয়","লিফলেট/পোস্টার","অন্যভাবে"])}</fieldset>
+<div class="f" style="margin-top:12px"><label for="f-msg">কিছু জানতে চাইলে লিখুন</label><textarea id="f-msg" name="msg">${esc(F.msg)}</textarea></div>
+<label style="display:flex;gap:8px;align-items:flex-start;margin-top:12px;font-size:14px"><input type="checkbox" name="agree" ${F.agree?"checked":""} style="margin-top:5px;accent-color:var(--sakura)"><span>আমি সম্মতি দিচ্ছি যে ভর্তির বিষয়ে যোগাযোগের জন্য さくら日本語学院 এই তথ্য ব্যবহার করবে। <span class="req">*</span></span></label>
+${S.err?`<p class="err" role="alert">${esc(S.err)}</p>`:""}
+<div class="row" style="margin-top:14px"><button class="btn" type="submit">${exp&&exp!=="একদম নতুন"?"পরের ধাপ: লেভেল টেস্ট":"পরের ধাপ"}</button><button type="button" class="btn line" data-go="info">ফিরে যান</button></div></form>`}
+
+function vTest(fromForm){const T=S.test;const n=Object.keys(T.ans).length;
+  if(T.done){const p=placement(T.ans);return `<h2 class="h2">লেভেল টেস্টের ফল</h2><div class="result"><div>সঠিক উত্তর: <b>${bn(p.total)} / ${bn(TEST.length)}</b> (কানা ${bn(p.k)}/৫ · N5 ${bn(p.f)}/৮ · N4 ${bn(p.g)}/৭)</div><div style="margin-top:6px">আমাদের পরামর্শ: <b>${esc(p.rec)}</b></div></div>
+   <p class="note">এটা শুধু প্রাথমিক ধারণা। ফ্রি ক্লাসে শিক্ষক কথা বলে চূড়ান্ত ব্যাচ ঠিক করবেন।</p>
+   <div class="row">${S.fromForm?`<button type="button" class="btn" data-go="submit">পরের ধাপ: আবেদন জমা</button>`:`<button type="button" class="btn" data-go="form">এবার ভর্তির আবেদন করুন</button>`}<button type="button" class="btn line" id="retest">আবার দিন</button></div>`}
+  return `<h2 class="h2">লেভেল টেস্ট</h2>${S.fromForm?`<div class="steps"><span class="step">১. তথ্য</span><span class="step" aria-current="true">২. লেভেল টেস্ট</span><span class="step">৩. জমা</span></div>`:""}<p class="note">২০টি প্রশ্ন, প্রায় ১০ মিনিট। না জানলে আন্দাজ না করে বাদ দিন, তাহলে ফল বেশি সঠিক হবে।</p>
+  <div class="meter" aria-hidden="true" style="margin-block:10px 16px"><i style="width:${n/TEST.length*100}%"></i></div>
+  <div class="card">${TEST.map((t,i)=>{const ord=order("pt"+i,4);return `<div class="q"><div class="qn">প্রশ্ন ${bn(i+1)} · ${t.b==="k"?"কানা":t.b==="5"?"N5":"N4"}</div><div class="qq">${esc(t.q)}</div><div class="opts">${ord.map(ci=>`<button type="button" class="opt" data-ans="${i}:${ci}" aria-pressed="${T.ans[i]===ci}">${esc(t.c[ci])}</button>`).join("")}</div></div>`}).join("")}
+  <div class="row"><button type="button" class="btn" id="finishTest">${n<TEST.length?`ফল দেখুন (${bn(TEST.length-n)}টি বাদ)`:"ফল দেখুন"}</button>${S.fromForm?`<button type="button" class="btn line" data-go="submit">টেস্ট ছাড়া জমা দিন</button>`:""}</div></div>`}
+
+function summaryText(){const F=S.form;const p=S.test.done?placement(S.test.ans):null;
+  const lines=["さくら日本語学院 · ভর্তির আবেদন",`নাম: ${F.name}`,`মোবাইল: ${F.phone}`+(F.wa?` · WhatsApp: ${F.wa}`:""),F.email?`ইমেইল: ${F.email}`:"",`বয়স: ${F.age}`,`শিক্ষা: ${F.edu}${F.eduYear?" ("+F.eduYear+")":""}`,F.area?`এলাকা: ${F.area}`:"",`কোর্স: ${F.course}`,`ব্যাচ: ${F.time}`,`জাপানি: ${F.exp}`,(F.goal||[]).length?`লক্ষ্য: ${F.goal.join(", ")}`:"",F.heard?`জেনেছেন: ${F.heard}`:"",p?`লেভেল টেস্ট: ${p.total}/20 · পরামর্শ: ${p.rec}`:"",F.msg?`বার্তা: ${F.msg}`:""];
+  return lines.filter(Boolean).join("\n")}
+function vSubmit(){const t=summaryText();
+  if(S.sent)return `<h2 class="h2">ধন্যবাদ!</h2><div class="result"><b>${S.sent==="db"?"আপনার আবেদন জমা হয়েছে।":"শেষ ধাপ: আবেদনটি WhatsApp-এ পাঠান।"}</b><div>${S.sent==="db"?"১–২ দিনের মধ্যে আমরা ফোন বা WhatsApp-এ যোগাযোগ করব।":"নিচের বোতামে চাপ দিলে WhatsApp খুলবে, লেখাটি আগে থেকে বসানো থাকবে। শুধু Send চাপুন।"}</div></div>
+   ${S.sent!=="db"?waBlock(t):""}<div class="row" style="margin-top:14px"><button type="button" class="btn line" data-go="info">মূল পাতায় যান</button></div>`;
+  return `<h2 class="h2">আবেদন জমা দিন</h2><div class="steps"><span class="step">১. তথ্য</span><span class="step">২. লেভেল টেস্ট</span><span class="step" aria-current="true">৩. জমা</span></div>
+   <div class="card"><p style="margin-top:0">আপনার তথ্য একবার দেখে নিন:</p><div class="pre">${esc(t)}</div>${S.err?`<p class="err" role="alert">${esc(S.err)}</p>`:""}
+   <div class="row" style="margin-top:14px"><button type="button" class="btn" id="send">আবেদন জমা দিন</button><button type="button" class="btn line" data-go="form">তথ্য বদলান</button></div></div>`}
+function waBlock(t){const url=`https://wa.me/${SCHOOL.waDigits}?text=${encodeURIComponent(t)}`;
+  return `<div class="card" style="margin-top:12px;display:grid;gap:10px"><a class="btn" style="text-align:center;text-decoration:none" href="${url}" target="_blank" rel="noopener">WhatsApp-এ পাঠান</a><div class="note">WhatsApp না খুললে লেখাটি কপি করে এই নম্বরে পাঠান: <span class="sel">${esc(SCHOOL.wa)}</span></div><button type="button" class="btn ghost sm" id="copy">লেখাটি কপি করুন</button><div class="pre" id="sumText">${esc(t)}</div></div>`}
+
+const STATUS={new:"নতুন",called:"যোগাযোগ হয়েছে",trial:"ফ্রি ক্লাসে আসছে",joined:"ভর্তি হয়েছে",no:"আগ্রহী নয়"};
+function vTeacher(){if(!cap.canEdit)return `<p>এই অংশটি শুধু শিক্ষকদের জন্য।</p>`;
+  if(!APPS)return `<h2 class="h2">ভর্তির আবেদন</h2><p class="note">লোড হচ্ছে…</p>`;
+  const list=[...APPS].sort((a,b)=>(b.at||0)-(a.at||0));const cnt=s=>list.filter(a=>(a.status||"new")===s).length;
+  return `<h2 class="h2">ভর্তির আবেদন (${bn(list.length)})</h2><div class="row" style="margin-bottom:10px">${Object.entries(STATUS).map(([k,v])=>`<span class="pill ${k==="new"?"new":k==="joined"?"done":k==="no"?"no":""}">${v}: ${bn(cnt(k))}</span>`).join("")}</div>
+  <p class="note">WhatsApp দিয়ে পাঠানো আবেদন এখানে আসে না; সেগুলো WhatsApp-এই দেখুন।</p>
+  <div class="card">${list.length?list.map(a=>{const f=a.form||{};const d=a.at?new Date(a.at):null;return `<div class="app"><div class="row" style="justify-content:space-between"><b style="font-size:17px">${esc(f.name)}</b><select data-status="${esc(a._id)}" aria-label="অবস্থা">${Object.entries(STATUS).map(([k,v])=>`<option value="${k}" ${(a.status||"new")===k?"selected":""}>${v}</option>`).join("")}</select></div>
+   <div class="meta"><span class="sel">${esc(f.phone)}</span>${f.wa?` · WA <span class="sel">${esc(f.wa)}</span>`:""} · ${esc(f.course)} · ${esc(f.time)} · ${esc(f.exp)}</div>
+   <div class="meta">${esc(f.edu)}${f.eduYear?" ("+esc(f.eduYear)+")":""} · বয়স ${esc(f.age)}${f.area?" · "+esc(f.area):""}${a.test?` · টেস্ট ${bn(a.test.total)}/২০ → ${esc(a.test.rec)}`:""}</div>
+   ${f.msg?`<div style="font-size:14px">"${esc(f.msg)}"</div>`:""}<div class="meta">${d?d.toLocaleDateString("bn-BD")+" "+d.toLocaleTimeString("bn-BD",{hour:"2-digit",minute:"2-digit"}):""}</div></div>`}).join(""):`<p class="note" style="margin:0">এখনো কোনো আবেদন আসেনি। পেজটি শেয়ার করুন বা Facebook পোস্টে লিংক দিন।</p>`}</div>`}
+
+function render(top){const v=S.view;$("#app").innerHTML=v==="info"?vInfo():v==="form"?vForm():v==="test"?vTest():v==="submit"?vSubmit():vTeacher();
+  $("#tLink").hidden=!cap.canEdit;$("#tLink").textContent=v==="teacher"?"আবেদন পাতা":"শিক্ষক প্যানেল";if(top!==false)window.scrollTo(0,0)}
+function readForm(){const fm=$("#appForm");if(!fm)return;const F=S.form;const fd=new FormData(fm);
+  for(const k of ["name","phone","wa","email","age","area","edu","eduYear","msg","course","time","exp","heard"])F[k]=(fd.get(k)||"").toString().trim();
+  F.goal=fd.getAll("goal").map(String);F.agree=!!fd.get("agree");store.set("draft",F)}
+function validate(){const F=S.form;if(!F.name)return "নাম লিখুন।";if(!/^[+0-9\s-]{10,16}$/.test(F.phone||""))return "সঠিক মোবাইল নম্বর লিখুন (যেমন 01712345678)।";
+  if(!F.age)return "বয়স লিখুন।";if(!F.edu)return "সর্বোচ্চ শিক্ষা বেছে নিন।";if(!F.course)return "কোর্স বেছে নিন।";if(!F.time)return "ক্লাসের সময় বেছে নিন।";if(!F.exp)return "জাপানি কতটুকু জানেন তা বেছে নিন।";if(!F.agree)return "সম্মতির ঘরে টিক দিন।";return ""}
+
+document.addEventListener("input",e=>{if(e.target.closest("#appForm"))readForm()});
+document.addEventListener("change",async e=>{if(e.target.closest("#appForm"))readForm();
+  if(e.target.dataset.status&&cap.db){const id=e.target.dataset.status;try{await cap.db.doc("applications/"+id).update({status:e.target.value})}catch(err){e.target.value=(APPS.find(a=>a._id===id)||{}).status||"new"}}});
+document.addEventListener("submit",e=>{e.preventDefault();if(e.target.id!=="appForm")return;readForm();S.err=validate();if(S.err){render(false);return}
+  S.fromForm=true;S.view=S.form.exp!=="একদম নতুন"&&!S.test.done?"test":"submit";render()});
+document.addEventListener("click",async e=>{const b=e.target.closest("button");if(!b)return;
+  if(b.dataset.go){if(b.dataset.go==="test")S.fromForm=false;S.err="";S.view=b.dataset.go;render();return}
+  if(b.id==="tLink"){S.view=S.view==="teacher"?"info":"teacher";watch();render();return}
+  if(b.dataset.ans){const [i,c]=b.dataset.ans.split(":").map(Number);S.test.ans[i]=S.test.ans[i]===c?undefined:c;if(S.test.ans[i]===undefined)delete S.test.ans[i];
+    b.parentElement.querySelectorAll(".opt").forEach(x=>x.setAttribute("aria-pressed",x===b&&S.test.ans[i]===c));const n=Object.keys(S.test.ans).length;$(".meter i").style.width=n/TEST.length*100+"%";$("#finishTest").textContent=n<TEST.length?`ফল দেখুন (${bn(TEST.length-n)}টি বাদ)`:"ফল দেখুন";return}
+  if(b.id==="finishTest"){S.test.done=true;render();return}
+  if(b.id==="retest"){S.test={ans:{},done:false};render();return}
+  if(b.id==="send"){b.disabled=true;S.err="";const p=S.test.done?placement(S.test.ans):null;
+    if(cap.db&&cap.uid){try{await cap.db.doc("applications/"+cap.uid).set({form:S.form,test:p,at:Date.now(),status:"new"});S.sent="db";store.set("draft",{});render();return}catch(err){}}
+    S.sent="wa";render();return}
+  if(b.id==="copy"){const t=$("#sumText").textContent;try{await navigator.clipboard.writeText(t);b.textContent="কপি হয়েছে"}catch(err){const r=document.createRange();r.selectNodeContents($("#sumText"));const s=getSelection();s.removeAllRanges();s.addRange(r);b.textContent="লেখাটি সিলেক্ট করা হয়েছে, কপি করুন"}return}
+});
+function watch(){if(!cap.db||!cap.canEdit||unsub)return;try{unsub=cap.db.collection("applications").onSnapshot(s=>{APPS=s.docs.map(d=>({...d.data(),_id:d.id}));if(S.view==="teacher")render(false)},()=>{unsub=null})}catch(e){}}
+(async()=>{try{const [db,user]=await Promise.all([window.claude?.use?.("db")??null,window.claude?.use?.("user")??null]);cap.db=db;
+  if(user){cap.uid=await user.id();cap.canEdit=!!(await user.canEdit())}if(cap.canEdit)watch()}catch(e){}$("#tLink").hidden=!cap.canEdit})();
+if(location.hash==="#apply")S.view="form";else if(location.hash==="#test")S.view="test";
+render();
+</script>

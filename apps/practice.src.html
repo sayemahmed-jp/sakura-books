@@ -1,0 +1,319 @@
+<title>さくら練習</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Hind+Siliguri:wght@400;500;600;700&family=Noto+Sans+JP:wght@400;500;700&family=Shippori+Mincho:wght@600;800&display=swap">
+<style>
+/* Layout: phone-first practice app, one column with a bottom tab bar; sakura book palette, light by design */
+:root{
+  --bg:#fcf6f8; --paper:#ffffff; --ink:#1b2745; --muted:#5b6478; --line:#eedfe5;
+  --sakura:#c4577a; --sakura-deep:#a13f60; --sakura-soft:#f8e4eb; --blush:#fdeef3;
+  --ai:#2c3e8f; --ai-soft:#e8ebf8; --teal:#1f857a; --teal-soft:#dff2ef; --gold:#b9821a; --gold-soft:#fbf0d9;
+  --ok:#2e7d5b; --ok-soft:#e1f2e9; --ng:#b3261e; --ng-soft:#fbe7e5;
+  --f-display:"Shippori Mincho","Hiragino Mincho ProN","Yu Mincho",serif;
+  --f-jp:"Noto Sans JP","Hiragino Sans","Yu Gothic","Hind Siliguri",sans-serif;
+  --f-bn:"Hind Siliguri","Noto Sans Bengali","Noto Sans JP",system-ui,sans-serif;
+  color-scheme:light;
+}
+*{box-sizing:border-box}
+body{background:var(--bg);color:var(--ink);font-family:var(--f-bn);font-size:16px;line-height:1.6;margin:0}
+button,select,input{font:inherit;color:inherit}
+button{cursor:pointer}
+:focus-visible{outline:2px solid var(--sakura);outline-offset:2px}
+.jp{font-family:var(--f-jp)}
+ruby rt{font-size:.5em;color:var(--sakura-deep);font-family:var(--f-jp)}
+.nofuri ruby rt{visibility:hidden}
+.wrap{max-width:720px;margin:0 auto;padding-inline:16px;padding-block:0 110px}
+.top{position:sticky;top:env(safe-area-inset-top,0px);z-index:5;background:rgba(255,255,255,.94);backdrop-filter:blur(8px);border-bottom:1px solid var(--line)}
+.top-in{max-width:720px;margin:0 auto;padding:10px 16px;display:flex;align-items:center;gap:10px}
+.brand{font-family:var(--f-display);font-weight:800;font-size:20px;display:flex;align-items:center;gap:6px}
+.who{margin-left:auto;font-size:13px;color:var(--muted);text-align:right;line-height:1.3}
+.tabs{position:fixed;left:0;right:0;bottom:0;z-index:6;background:var(--paper);border-top:1px solid var(--line);padding-bottom:env(safe-area-inset-bottom,0px)}
+.tabs-in{max-width:720px;margin:0 auto;display:grid;grid-template-columns:repeat(var(--n,3),1fr)}
+.tab{border:0;background:none;padding:8px 4px 10px;display:grid;justify-items:center;gap:2px;font-size:13px;color:var(--muted);font-weight:600}
+.tab svg{width:24px;height:24px}
+.tab[aria-current="true"]{color:var(--sakura-deep)}
+h1,h2,h3{text-wrap:balance;margin:0}
+.h2{font-size:22px;font-weight:700;margin-block:22px 10px}
+.lead{color:var(--muted);margin:0 0 12px}
+.row{display:flex;gap:8px;flex-wrap:wrap;align-items:center}
+.seg{display:inline-flex;border:1.5px solid var(--sakura-soft);border-radius:999px;padding:2px;background:var(--paper)}
+.seg button{border:0;background:none;border-radius:999px;padding:4px 12px;font-weight:700;font-size:14px;color:var(--sakura-deep)}
+.seg button[aria-pressed="true"]{background:var(--sakura);color:#fff}
+select{border:1.5px solid var(--line);border-radius:10px;padding:7px 10px;background:var(--paper);flex:1;min-width:0;max-width:100%}
+.tog{border:1.5px solid var(--sakura-soft);background:var(--paper);border-radius:999px;padding:4px 12px;font-size:13px;color:var(--sakura-deep);font-weight:600}
+.tog[aria-pressed="true"]{background:var(--sakura);border-color:var(--sakura);color:#fff}
+.btn{border:0;border-radius:12px;padding:11px 18px;font-weight:700;background:var(--sakura);color:#fff}
+.btn.ghost{background:var(--sakura-soft);color:var(--sakura-deep)}
+.btn.line{background:var(--paper);border:1.5px solid var(--line);color:var(--ink)}
+.btn:disabled{opacity:.45;cursor:default}
+.card{background:var(--paper);border:1px solid var(--line);border-radius:16px;padding:16px}
+.warn{background:var(--gold-soft);border-radius:12px;padding:10px 14px;font-size:14px;margin-block:10px}
+.hero{padding-block:26px 8px;display:grid;gap:8px}
+.hero h1{font-family:var(--f-display);font-size:clamp(30px,8vw,44px);font-weight:800;line-height:1.2}
+.field{display:grid;gap:6px;margin-block:14px}
+.field input{border:1.5px solid var(--line);border-radius:12px;padding:11px 12px;background:var(--paper);width:100%}
+
+/* listening */
+.player{position:sticky;top:calc(env(safe-area-inset-top,0px) + 54px);z-index:4;background:var(--paper);border:1px solid var(--line);border-radius:16px;padding:12px;display:grid;gap:10px;margin-block:12px}
+.pctl{display:flex;gap:8px;align-items:center;flex-wrap:wrap}
+.pbig{width:52px;height:52px;border-radius:50%;border:0;background:var(--sakura);color:#fff;display:grid;place-items:center}
+.pbig svg{width:24px;height:24px}
+.speed{font-variant-numeric:tabular-nums}
+.scene{color:var(--muted);font-size:14px;background:var(--blush);border-radius:10px;padding:8px 12px;margin:0}
+.dl{display:grid;gap:10px}
+.ln{display:grid;grid-template-columns:40px 1fr;gap:10px;align-items:start;border-radius:12px;padding:8px;border:1.5px solid transparent;background:none;text-align:left;width:100%}
+.ln.on{border-color:var(--sakura);background:var(--blush)}
+.av{width:40px;height:40px;border-radius:50%;display:grid;place-items:center;color:#fff;font-family:var(--f-jp);font-weight:700;background:var(--muted)}
+.av.rahim{background:var(--ai)}.av.min{background:var(--teal)}.av.yui{background:var(--sakura)}.av.sensei{background:var(--gold)}
+.nm{font-size:12px;color:var(--muted);font-family:var(--f-jp)}
+.sy{font-family:var(--f-jp);font-size:19px;line-height:1.85}
+.tr{font-size:14px;color:var(--muted)}
+.hidejp .sy{filter:blur(7px)}
+.hidejp .ln.on .sy,.hidejp .ln.shown .sy{filter:none}
+.notr .tr{display:none}
+.passage{font-family:var(--f-jp);font-size:18px;line-height:2;white-space:pre-line;background:var(--paper);border:1px solid var(--line);border-left:4px solid #7a4fb0;border-radius:12px;padding:12px 16px}
+
+/* quiz */
+.qbox{display:grid;gap:12px;justify-items:center;text-align:center;padding-block:10px}
+.qplay{width:96px;height:96px;border-radius:50%;border:0;background:var(--sakura);color:#fff;display:grid;place-items:center;box-shadow:0 8px 24px rgba(196,87,122,.3)}
+.qplay svg{width:40px;height:40px}
+.opts{display:grid;gap:8px;width:100%}
+.opt{border:1.5px solid var(--line);background:var(--paper);border-radius:12px;padding:11px 14px;text-align:left;font-size:16px}
+.opt.ok{border-color:var(--ok);background:var(--ok-soft);color:var(--ok);font-weight:700}
+.opt.ng{border-color:var(--ng);background:var(--ng-soft);color:var(--ng)}
+.meter{height:8px;background:var(--sakura-soft);border-radius:99px;overflow:hidden;width:100%}
+.meter i{display:block;height:100%;background:var(--sakura);border-radius:99px}
+
+/* flashcards */
+.fc{perspective:1200px;width:100%;max-width:440px;margin:6px auto 0;aspect-ratio:4/3}
+.fc-in{position:relative;width:100%;height:100%;transition:transform .45s;transform-style:preserve-3d;cursor:pointer}
+.fc.flip .fc-in{transform:rotateY(180deg)}
+.face{position:absolute;inset:0;backface-visibility:hidden;background:var(--paper);border:1.5px solid var(--line);border-radius:22px;display:grid;place-items:center;align-content:center;gap:8px;padding:18px;text-align:center;box-shadow:0 10px 30px rgba(161,63,96,.10)}
+.face.back{transform:rotateY(180deg);background:var(--blush)}
+.fj{font-family:var(--f-jp);font-size:clamp(30px,9vw,44px);line-height:1.6}
+.fk{font-family:var(--f-display);font-weight:800;font-size:clamp(72px,22vw,110px);line-height:1}
+.fb{font-size:20px;font-weight:600}
+.fs{font-size:14px;color:var(--muted)}
+.rate{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;max-width:440px;margin:14px auto 0}
+.rate button{border:0;border-radius:12px;padding:12px 6px;font-weight:700;display:grid;gap:0;line-height:1.3}
+.rate small{font-weight:500;font-size:12px;opacity:.8}
+.r0{background:var(--ng-soft);color:var(--ng)}.r1{background:var(--gold-soft);color:var(--gold)}.r2{background:var(--ok-soft);color:var(--ok)}
+.decks{display:grid;gap:8px}
+.deck{display:grid;grid-template-columns:1fr auto;gap:4px 12px;align-items:center;background:var(--paper);border:1px solid var(--line);border-radius:14px;padding:12px 14px;text-align:left;width:100%}
+.deck b{font-family:var(--f-jp);font-weight:600}
+.deck .sub{font-size:13px;color:var(--muted)}
+.deck .meter{grid-column:1/-1}
+.pill{font-size:12px;font-weight:700;border-radius:999px;padding:2px 10px;background:var(--sakura-soft);color:var(--sakura-deep);white-space:nowrap}
+.pill.due{background:var(--sakura);color:#fff}
+.stats{display:grid;grid-template-columns:repeat(auto-fit,minmax(140px,1fr));gap:10px}
+.stat{background:var(--paper);border:1px solid var(--line);border-radius:14px;padding:12px}
+.stat b{display:block;font-size:26px;font-variant-numeric:tabular-nums}
+.stat span{font-size:13px;color:var(--muted)}
+.tw{overflow-x:auto;border:1px solid var(--line);border-radius:12px;background:var(--paper)}
+table{border-collapse:collapse;width:100%;font-size:14px;min-width:560px}
+th,td{padding:8px 10px;border-bottom:1px solid var(--line);text-align:left;white-space:nowrap}
+th{background:var(--blush);font-weight:700;font-size:13px}
+td.n{font-variant-numeric:tabular-nums}
+.toast{position:fixed;left:50%;bottom:calc(84px + env(safe-area-inset-bottom,0px));transform:translateX(-50%);background:var(--ink);color:#fff;border-radius:999px;padding:8px 16px;font-size:14px;z-index:9}
+@media (prefers-reduced-motion:reduce){.fc-in{transition:none}}
+</style>
+
+<header class="top"><div class="top-in"><div class="brand"><span id="logo"></span>さくら練習</div><div class="who" id="who"></div></div></header>
+<main class="wrap" id="app"></main>
+<nav class="tabs" aria-label="অংশ"><div class="tabs-in" id="tabs"></div></nav>
+<div class="toast" id="toast" hidden></div>
+
+<script>
+const BOOKS=/*BOOKS*/null;
+const $=s=>document.querySelector(s);
+const esc=s=>String(s??"").replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
+const rb=s=>esc(s).replace(/\{([^|{}]+)\|([^{}]+)\}/g,"<ruby>$1<rt>$2</rt></ruby>");
+const reading=s=>String(s).replace(/\{([^|{}]+)\|([^{}]+)\}/g,"$2").replace(/[（）()]/g," ").replace(/〜/g,"");
+const plain=s=>String(s).replace(/\{([^|{}]+)\|([^{}]+)\}/g,"$1");
+const bn=n=>String(n).replace(/\d/g,d=>"০১২৩৪৫৬৭৮৯"[d]);
+const store={get(k,d){try{const v=localStorage.getItem("sp."+k);return v==null?d:JSON.parse(v)}catch(e){return d}},set(k,v){try{localStorage.setItem("sp."+k,JSON.stringify(v))}catch(e){}}};
+const LOGO=sz=>{let p='';for(let i=0;i<5;i++)p+=`<path transform="rotate(${i*72})" d="M0 -2.5 C-6.5 -7 -7.5 -14 -4 -18 L0 -15 L4 -18 C7.5 -14 6.5 -7 0 -2.5Z"/>`;return `<svg width="${sz}" height="${sz}" viewBox="-20 -20 40 40" aria-hidden="true"><g fill="var(--sakura)">${p}</g><circle r="3" fill="var(--ink)"/></svg>`};
+$("#logo").innerHTML=LOGO(24);
+const ICON={listen:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M4 14v-2a8 8 0 0 1 16 0v2"/><rect x="3" y="14" width="4" height="6" rx="1.5"/><rect x="17" y="14" width="4" height="6" rx="1.5"/></svg>',
+ cards:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round"><rect x="3" y="6" width="14" height="14" rx="2.5"/><path d="M7 3h11.5A2.5 2.5 0 0 1 21 5.5V17"/></svg>',
+ me:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M4 20V10M10 20V4M16 20v-7M22 20H2"/></svg>',
+ teacher:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="9" cy="8" r="3.5"/><path d="M2.5 20a6.5 6.5 0 0 1 13 0M16 4.5a3.5 3.5 0 0 1 0 7M18.5 14a6.5 6.5 0 0 1 3 6"/></svg>',
+ play:'<svg viewBox="0 0 24 24" fill="currentColor"><path d="M7 4.5v15l13-7.5z"/></svg>',
+ pause:'<svg viewBox="0 0 24 24" fill="currentColor"><rect x="6" y="4.5" width="4" height="15" rx="1"/><rect x="14" y="4.5" width="4" height="15" rx="1"/></svg>'};
+
+/* ---------- speech ---------- */
+let voice=null;function loadV(){try{voice=speechSynthesis.getVoices().find(v=>/^ja/i.test(v.lang))||null}catch(e){}}
+const hasTTS="speechSynthesis" in window;if(hasTTS){loadV();speechSynthesis.onvoiceschanged=()=>{loadV();if(S.tab==="listen")render()}}
+const PITCH={"ラヒム":.85,"ミン":1.15,"ゆい":1.35,"田中先生":1.1};
+function speak(text,who,rate){return new Promise(res=>{try{const u=new SpeechSynthesisUtterance(reading(text));u.lang="ja-JP";if(voice)u.voice=voice;u.rate=rate||S.rate;u.pitch=PITCH[plain(who||"")]??1;u.onend=u.onerror=()=>res();speechSynthesis.speak(u)}catch(e){res()}})}
+function stopTTS(){try{speechSynthesis.cancel()}catch(e){}}
+const wait=ms=>new Promise(r=>setTimeout(r,ms));
+
+/* ---------- data helpers ---------- */
+const units=lv=>BOOKS[lv].filter(u=>u.kind!=="ref");
+const label=u=>u.kind==="kana"?u.title:`第${u.no}課`;
+const today=()=>{const d=new Date();return `${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,"0")}-${String(d.getDate()).padStart(2,"0")}`};
+const DAY=86400000;
+function cardsOf(lv,u){const c=[];(u.vocab||[]).forEach((v,i)=>c.push({id:`${lv}.${u.id}.v${i}`,t:"v",j:v[0],b:v[1]}));(u.kanji||[]).forEach((k,i)=>c.push({id:`${lv}.${u.id}.k${i}`,t:"k",k:k.k,on:k.on,kun:k.kun,b:k.bn,w:k.w}));return c}
+const ALLCARDS={};for(const lv of ["N5","N4"])for(const u of units(lv))for(const c of cardsOf(lv,u))ALLCARDS[c.id]=c;
+const INTERVAL=[0,1,3,7,16,35];
+
+/* ---------- state ---------- */
+let S={tab:"listen",name:store.get("name",""),lv:store.get("lv","N5"),uid:store.get("uid",null),rate:store.get("rate",.85),furi:true,tr:true,hidejp:false,shadow:false,
+  mode:"dialog",playing:false,cur:-1,quiz:null,deck:null,flip:false,rev:false};
+let P=Object.assign({srs:{},listen:{},quiz:{},days:[]},store.get("prog",{}));
+const cap={db:null,user:null,uid:null,canEdit:false,ready:false};
+let saveT=null,saving=false,dirty=false;
+function touch(){const d=today();if(!P.days.includes(d)){P.days.push(d);P.days=P.days.slice(-90)}store.set("prog",P);dirty=true;clearTimeout(saveT);saveT=setTimeout(save,2500)}
+async function save(){if(!cap.db||!cap.uid||saving||!dirty)return;saving=true;dirty=false;
+  try{await cap.db.doc("progress/"+cap.uid).set({name:S.name||"",srs:P.srs,listen:P.listen,quiz:P.quiz,days:P.days,updatedAt:Date.now()})}catch(e){dirty=true}
+  saving=false;if(dirty){clearTimeout(saveT);saveT=setTimeout(save,4000)}}
+function toast(t){const el=$("#toast");el.textContent=t;el.hidden=false;clearTimeout(toast.t);toast.t=setTimeout(()=>el.hidden=true,2200)}
+
+function unit(){const L=units(S.lv);return L.find(u=>u.id===S.uid)||L.find(u=>u.kind==="lesson")||L[0]}
+function lessonPicker(){return `<div class="row" style="margin-block:12px"><div class="seg" role="group" aria-label="লেভেল">${["N5","N4"].map(l=>`<button type="button" data-lv="${l}" aria-pressed="${S.lv===l}">${l}</button>`).join("")}</div><select id="unitSel" aria-label="পাঠ">${units(S.lv).map(u=>`<option value="${u.id}" ${u.id===unit().id?"selected":""}>${esc(label(u))} · ${esc(plain(u.title))}</option>`).join("")}</select></div>`}
+
+/* ---------- views ---------- */
+function vWelcome(){return `<section class="hero"><div style="color:var(--sakura-deep);font-weight:700;font-size:13px;letter-spacing:.1em">さくら日本語学院 · প্রতিদিনের চর্চা</div><h1>প্রতিদিন ১৫ মিনিট</h1><p class="lead">বইয়ের প্রতিটি পাঠের কথোপকথন শোনো, শোনার কুইজ দাও, আর ফ্ল্যাশকার্ডে শব্দ ও কাঞ্জি মুখস্থ করো। তোমার অগ্রগতি শিক্ষক দেখতে পাবেন।</p></section>
+<form class="card" id="nameForm"><div class="field" style="margin:0 0 12px"><label for="nm"><b>তোমার নাম ও রোল</b></label><input id="nm" autocomplete="name" placeholder="যেমন: রাহিম, রোল ১২" value="${esc(S.name)}"></div><button class="btn" type="submit">শুরু করো</button></form>`}
+
+function vListen(){const u=unit();
+  let h=`<h2 class="h2">শোনা · 聴解</h2>${lessonPicker()}
+  <div class="seg" role="group" aria-label="ধরন" style="margin-bottom:6px">${[["dialog","কথোপকথন"],["reading","পড়া"],["quiz","শোনার কুইজ"]].filter(([m])=>m!=="reading"||u.reading).filter(([m])=>m!=="dialog"||u.dialog).map(([m,t])=>`<button type="button" data-mode="${m}" aria-pressed="${S.mode===m}">${t}</button>`).join("")}</div>`;
+  if(hasTTS&&!voice)h+=`<div class="warn">এই ফোন বা ব্রাউজারে জাপানি কণ্ঠ পাওয়া যায়নি, তাই শব্দ শোনা না-ও যেতে পারে। Android-এ Settings → ভাষা → Text-to-speech-এ "Japanese" ভয়েস ডাউনলোড করো, অথবা Chrome ব্যবহার করো।</div>`;
+  if(!hasTTS)h+=`<div class="warn">এই ব্রাউজারে কথা বলার সুবিধা নেই। Chrome বা Safari দিয়ে খোলো।</div>`;
+  const mode=(S.mode==="reading"&&!u.reading)||(S.mode==="dialog"&&!u.dialog)?(u.dialog?"dialog":"quiz"):S.mode;S.mode=mode;
+  if(mode==="quiz")return h+vQuiz(u);
+  const lines=mode==="dialog"?u.dialog:u.reading.text.split("\n").filter(Boolean).map(t=>["",t,""]);
+  h+=`<div class="player"><div class="pctl"><button type="button" class="pbig" id="playAll" aria-label="${S.playing?"থামাও":"চালাও"}">${S.playing?ICON.pause:ICON.play}</button>
+   <div class="seg" role="group" aria-label="গতি">${[[.6,"ধীর"],[.85,"মাঝারি"],[1,"স্বাভাবিক"]].map(([r,t])=>`<button type="button" data-rate="${r}" aria-pressed="${S.rate===r}">${t}</button>`).join("")}</div></div>
+   <div class="row"><button type="button" class="tog" id="tShadow" aria-pressed="${S.shadow}">শ্যাডোয়িং (প্রতি লাইনের পর বিরতি)</button><button type="button" class="tog" id="tHide" aria-pressed="${S.hidejp}">জাপানি লুকাও</button><button type="button" class="tog" id="tTr" aria-pressed="${S.tr}">বাংলা</button><button type="button" class="tog" id="tFuri" aria-pressed="${S.furi}">ふりがな</button></div></div>`;
+  if(mode==="dialog")h+=`<p class="scene">${esc(u.scene)}</p>`;else h+=`<h3 class="jp" style="margin-block:4px 8px">${rb(u.reading.t)}</h3>`;
+  h+=`<div class="dl ${S.hidejp?"hidejp":""} ${S.tr?"":"notr"} ${S.furi?"":"nofuri"}">${lines.map((l,i)=>{const nm=plain(l[0]);return `<button type="button" class="ln ${S.cur===i?"on":""}" data-line="${i}">${l[0]?`<span class="av ${AV[nm]||""}">${esc(AVI[nm]||nm.slice(0,1))}</span>`:`<span class="av" style="background:#7a4fb0">${bn(i+1)}</span>`}<span>${l[0]?`<span class="nm">${rb(l[0])}</span><br>`:""}<span class="sy">${rb(l[1])}</span>${l[2]?`<br><span class="tr">${esc(l[2])}</span>`:""}</span></button>`}).join("")}</div>
+  <p class="lead" style="margin-top:14px;font-size:14px">টিপস: প্রথমে "জাপানি লুকাও" চালু করে শুধু শুনে বোঝার চেষ্টা করো। তারপর লেখা দেখে আবার শোনো। শেষে শ্যাডোয়িং চালু করে প্রতিটি লাইনের পরে নিজে জোরে বলো।</p>`;
+  return h}
+const AV={'ラヒム':'rahim','ミン':'min','ゆい':'yui','田中先生':'sensei'};
+const AVI={'ラヒム':'ラ','ミン':'ミ','ゆい':'ゆ','田中先生':'田','店員':'店','店長':'長','医者':'医'};
+
+function curLines(){const u=unit();return S.mode==="dialog"?u.dialog:u.reading.text.split("\n").filter(Boolean).map(t=>["",t,""])}
+let runId=0;
+async function playFrom(start){const my=++runId;stopTTS();S.playing=true;const lines=curLines();
+  for(let i=start;i<lines.length;i++){if(my!==runId)return;S.cur=i;render(false);
+    await speak(lines[i][1],lines[i][0]);if(my!==runId)return;
+    if(S.shadow){await wait(Math.min(9000,1200+reading(lines[i][1]).length*170/S.rate))}else await wait(350)}
+  if(my!==runId)return;S.playing=false;S.cur=-1;const k=S.lv+"."+unit().id+"."+S.mode;P.listen[k]=(P.listen[k]||0)+1;touch();toast("শেষ! আরেকবার শুনলে আরও ভালো হবে।");render(false)}
+function stopPlay(){runId++;stopTTS();S.playing=false;render(false)}
+
+/* listening quiz: hear a word, pick its meaning */
+function makeQuiz(u){const pool=(u.vocab||[]).filter(v=>!/[〜]/.test(plain(v[0]))||true);const all=units(S.lv).flatMap(x=>x.vocab||[]);
+  const pick=[...pool].sort(()=>Math.random()-.5).slice(0,Math.min(10,pool.length));
+  return {uid:u.id,i:0,score:0,picked:null,items:pick.map(v=>{const others=[...new Set(all.map(x=>x[1]).filter(b=>b!==v[1]))].sort(()=>Math.random()-.5).slice(0,3);const c=[v[1],...others].sort(()=>Math.random()-.5);return {j:v[0],ok:v[1],c}})}}
+function vQuiz(u){if(!S.quiz||S.quiz.uid!==u.id)S.quiz=makeQuiz(u);const Q=S.quiz;
+  if(!Q.items.length)return `<p class="lead">এই পাঠে কুইজের শব্দ নেই।</p>`;
+  if(Q.i>=Q.items.length){const k=S.lv+"."+u.id;const best=P.quiz[k]||0;
+    return `<div class="card qbox"><div style="font-size:48px;font-weight:700;font-variant-numeric:tabular-nums">${bn(Q.score)} / ${bn(Q.items.length)}</div><p class="lead">${Q.score===Q.items.length?"সব সঠিক! চমৎকার।":Q.score>=Q.items.length*.7?"ভালো হয়েছে। ভুলগুলো ফ্ল্যাশকার্ডে আবার দেখো।":"কথোপকথন আর শব্দ আরেকবার শুনে আবার চেষ্টা করো।"}</p><p class="lead">এই পাঠে তোমার সেরা: ${bn(Math.max(best,Q.score))} / ${bn(Q.items.length)}</p><button type="button" class="btn" id="qAgain">আবার করো</button></div>`}
+  const it=Q.items[Q.i];
+  return `<div class="card qbox"><div class="meter" aria-hidden="true"><i style="width:${Q.i/Q.items.length*100}%"></i></div><div class="fs">প্রশ্ন ${bn(Q.i+1)} / ${bn(Q.items.length)} · শব্দটি শোনো, তারপর অর্থ বেছে নাও</div>
+   <button type="button" class="qplay" id="qPlay" aria-label="শব্দ শোনো">${ICON.play}</button>
+   ${Q.picked!=null?`<div class="fj" style="font-size:30px">${rb(it.j)}</div>`:`<div class="fs">আবার শুনতে বোতামে চাপ দাও</div>`}
+   <div class="opts">${it.c.map((c,ci)=>`<button type="button" class="opt ${Q.picked!=null?(c===it.ok?"ok":ci===Q.picked?"ng":""):""}" data-qopt="${ci}" ${Q.picked!=null?"disabled":""}>${esc(c)}</button>`).join("")}</div>
+   ${Q.picked!=null?`<button type="button" class="btn" id="qNext">${Q.i+1<Q.items.length?"পরের প্রশ্ন":"ফল দেখো"}</button>`:""}</div>`}
+
+/* ---------- flashcards ---------- */
+function deckStats(ids){const now=Date.now();let seen=0,due=0,known=0;for(const id of ids){const s=P.srs[id];if(!s)continue;seen++;if(s[1]<=now)due++;if(s[0]>=3)known++}return {total:ids.length,seen,due,known}}
+function dueAll(){const now=Date.now();return Object.keys(P.srs).filter(id=>ALLCARDS[id]&&P.srs[id][1]<=now)}
+function vCards(){
+  if(S.deck)return vStudy();
+  const due=dueAll();
+  let h=`<h2 class="h2">ফ্ল্যাশকার্ড · 単語と漢字</h2><p class="lead">একটা পাঠ বেছে নাও। কার্ড উল্টে নিজেকে যাচাই করো। যেগুলো পারো না সেগুলো তাড়াতাড়ি আবার আসবে, যেগুলো পারো সেগুলো কয়েক দিন পরে।</p>`;
+  h+=`<div class="card" style="display:flex;gap:12px;align-items:center;justify-content:space-between;flex-wrap:wrap"><div><b style="font-size:18px">আজকের রিভিউ</b><div class="fs">${due.length?`${bn(due.length)}টি কার্ড আজ আবার দেখার সময় হয়েছে`:"আজকের রিভিউ শেষ, অথবা এখনো কোনো কার্ড শুরু করোনি।"}</div></div><button type="button" class="btn" data-deck="due" ${due.length?"":"disabled"}>রিভিউ শুরু</button></div>`;
+  h+=`<div class="row" style="margin-block:16px 8px"><div class="seg" role="group" aria-label="লেভেল">${["N5","N4"].map(l=>`<button type="button" data-lv="${l}" aria-pressed="${S.lv===l}">${l}</button>`).join("")}</div><div class="seg" role="group" aria-label="দিক"><button type="button" data-dir="jb" aria-pressed="${!S.rev}">জাপানি → বাংলা</button><button type="button" data-dir="bj" aria-pressed="${S.rev}">বাংলা → জাপানি</button></div></div>`;
+  h+=`<div class="decks">${units(S.lv).map(u=>{const ids=cardsOf(S.lv,u).map(c=>c.id);if(!ids.length)return "";const st=deckStats(ids);return `<button type="button" class="deck" data-deck="${u.id}"><span><b>${esc(label(u))} ${rb(u.title)}</b><br><span class="sub">${bn(ids.length)}টি কার্ড · শিখেছ ${bn(st.known)}</span></span>${st.due?`<span class="pill due">${bn(st.due)} রিভিউ</span>`:st.seen?`<span class="pill">${bn(Math.round(st.known/st.total*100))}%</span>`:`<span class="pill">নতুন</span>`}<span class="meter" aria-hidden="true"><i style="width:${st.known/st.total*100}%"></i></span></button>`}).join("")}</div>`;
+  return h}
+function startDeck(id){let ids;if(id==="due")ids=dueAll();else{const u=units(S.lv).find(x=>x.id===id);const all=cardsOf(S.lv,u).map(c=>c.id);const now=Date.now();
+    const due=all.filter(i=>P.srs[i]&&P.srs[i][1]<=now),fresh=all.filter(i=>!P.srs[i]),later=all.filter(i=>P.srs[i]&&P.srs[i][1]>now);ids=[...due,...fresh];if(!ids.length)ids=later}
+  ids=ids.sort(()=>Math.random()-.5).slice(0,30);S.deck={name:id,ids,i:0,done:0,again:0};S.flip=false;render()}
+function vStudy(){const D=S.deck;
+  if(D.i>=D.ids.length){touch();return `<div class="card qbox"><div style="font-size:40px">お疲れさま！</div><p class="lead">${bn(D.done)}টি কার্ড দেখেছ। আবার দেখতে হবে ${bn(D.again)}টি। কাল আবার এসো, রিভিউয়ের কার্ড তৈরি থাকবে।</p><div class="row" style="justify-content:center"><button type="button" class="btn" id="deckBack">ডেকের তালিকা</button></div></div>`}
+  const c=ALLCARDS[D.ids[D.i]];const front=S.rev?`<div class="fb">${esc(c.b)}</div><div class="fs">${c.t==="k"?"কাঞ্জিটি কী?":"জাপানিতে কী বলে?"}</div>`:(c.t==="k"?`<div class="fk">${esc(c.k)}</div><div class="fs">অর্থ আর পড়া কী?</div>`:`<div class="fj">${esc(plain(c.j))}</div><div class="fs">অর্থ কী?</div>`);
+  const back=c.t==="k"?`<div class="fk" style="font-size:64px">${esc(c.k)}</div><div class="fb">${esc(c.b)}</div><div class="fs jp">オン: ${esc(c.on||"—")} · くん: ${esc(c.kun||"—")}</div><div class="jp" style="font-size:16px">${c.w.slice(0,2).map(([w,m])=>`${rb(w)} <span class="fs">${esc(m)}</span>`).join("<br>")}</div>`:`<div class="fj">${rb(c.j)}</div><div class="fb">${esc(c.b)}</div>`;
+  return `<div class="row" style="justify-content:space-between;margin-block:16px 4px"><button type="button" class="btn line" id="deckBack" style="padding:6px 12px">‹ ফিরে যাও</button><span class="fs">${bn(D.i+1)} / ${bn(D.ids.length)}</span></div>
+  <div class="meter" aria-hidden="true"><i style="width:${D.i/D.ids.length*100}%"></i></div>
+  <div class="fc ${S.flip?"flip":""}"><div class="fc-in" id="flip" role="button" tabindex="0" aria-label="কার্ড উল্টাও"><div class="face">${front}</div><div class="face back">${back}</div></div></div>
+  ${S.flip?`<div class="rate"><button type="button" class="r0" data-rate-card="0">আবার<small>পারিনি</small></button><button type="button" class="r1" data-rate-card="1">কঠিন<small>একটু ভেবে</small></button><button type="button" class="r2" data-rate-card="2">পারি<small>সহজ</small></button></div><div class="row" style="justify-content:center;margin-top:10px"><button type="button" class="tog" id="cardSay">▶ উচ্চারণ শোনো</button></div>`:`<p class="lead" style="text-align:center;margin-top:14px">উত্তর মনে মনে বলো, তারপর কার্ডে চাপ দাও।</p>`}`}
+function rateCard(r){const D=S.deck,id=D.ids[D.i];const s=P.srs[id]||[0,0];let box=s[0];
+  if(r===0){box=0;D.again++;D.ids.push(id)}else if(r===1)box=Math.max(1,box);else box=Math.min(5,box+1);
+  P.srs[id]=[box,Date.now()+(r===0?0:INTERVAL[box]*DAY)-3600000];D.done++;D.i++;S.flip=false;touch();render()}
+
+/* ---------- progress ---------- */
+function summary(p){const ids=Object.keys(p.srs||{}).filter(id=>ALLCARDS[id]);const known=ids.filter(id=>p.srs[id][0]>=3).length;
+  const listens=Object.values(p.listen||{}).reduce((a,b)=>a+b,0);const qs=Object.values(p.quiz||{});const avg=qs.length?Math.round(qs.reduce((a,b)=>a+b,0)/qs.length*10):null;
+  const days=(p.days||[]);const key=d=>`${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,"0")}-${String(d.getDate()).padStart(2,"0")}`;
+  let streak=0,d=new Date();if(!days.includes(key(d)))d=new Date(d.getTime()-DAY);while(days.includes(key(d))){streak++;d=new Date(d.getTime()-DAY)}
+  const last7=days.filter(d=>Date.now()-new Date(d).getTime()<7*DAY).length;
+  return {seen:ids.length,known,listens,avg,streak,last7,quizN:qs.length}}
+function vMe(){const s=summary(P);const tot=Object.keys(ALLCARDS).length;
+  return `<h2 class="h2">আমার অগ্রগতি</h2><div class="stats">
+  <div class="stat"><b>${bn(s.streak)}</b><span>দিন টানা চর্চা</span></div>
+  <div class="stat"><b>${bn(s.last7)} / ৭</b><span>গত সপ্তাহে চর্চার দিন</span></div>
+  <div class="stat"><b>${bn(s.seen)}</b><span>শুরু করা কার্ড (মোট ${bn(tot)})</span></div>
+  <div class="stat"><b>${bn(s.known)}</b><span>পাকা করে শেখা কার্ড (৩ বার সঠিক)</span></div>
+  <div class="stat"><b>${bn(s.listens)}</b><span>বার শোনা শেষ করেছ</span></div>
+  <div class="stat"><b>${s.avg==null?"—":bn(s.avg)+"%"}</b><span>শোনার কুইজে গড় (সেরা ফল)</span></div></div>
+  <div class="card" style="margin-top:14px"><b>লক্ষ্য:</b> প্রতিদিন ১টি কথোপকথন শোনা, ১টি শোনার কুইজ আর আজকের রিভিউ শেষ করা। সপ্তাহে অন্তত ৫ দিন।</div>
+  <p class="fs" style="margin-top:14px">${cap.db&&cap.uid?"তোমার অগ্রগতি অনলাইনে সেভ হচ্ছে, শিক্ষক দেখতে পাবেন।":"অনলাইন সেভিং চালু নেই, তাই অগ্রগতি শুধু এই ফোনে সেভ হচ্ছে।"}</p>
+  <form id="nameForm" class="field"><label for="nm">নাম ও রোল</label><div class="row"><input id="nm" value="${esc(S.name)}" style="flex:1;min-width:0"><button class="btn ghost" type="submit">বদলাও</button></div></form>`}
+
+let TROWS=null,unsubT=null;
+function watchTeacher(){if(!cap.db||!cap.canEdit||unsubT)return;try{unsubT=cap.db.collection("progress").onSnapshot(s=>{TROWS=s.docs.map(d=>d.data());if(S.tab==="teacher")render()},()=>{unsubT=null})}catch(e){}}
+function vTeacher(){if(!cap.canEdit)return `<p class="lead">এই অংশটি শুধু শিক্ষকদের জন্য।</p>`;
+  if(!TROWS)return `<h2 class="h2">শিক্ষক প্যানেল</h2><p class="lead">ছাত্রদের অগ্রগতি লোড হচ্ছে…</p>`;
+  const rows=TROWS.map(r=>({r,s:summary(r)})).sort((a,b)=>(b.r.updatedAt||0)-(a.r.updatedAt||0));
+  return `<h2 class="h2">শিক্ষক প্যানেল</h2><p class="lead">ছাত্ররা এই অ্যাপে যা চর্চা করে তা এখানে দেখা যায়। লাল চিহ্ন মানে গত ৩ দিন কোনো চর্চা নেই।</p>
+  ${rows.length?`<div class="tw"><table><thead><tr><th>ছাত্র/ছাত্রী</th><th>শেষ চর্চা</th><th>টানা দিন</th><th>গত ৭ দিন</th><th>শেখা কার্ড</th><th>শোনা</th><th>কুইজ গড়</th></tr></thead><tbody>${rows.map(({r,s})=>{const ago=r.updatedAt?Math.floor((Date.now()-r.updatedAt)/DAY):null;return `<tr><td>${ago!=null&&ago>=3?'<span style="color:var(--ng)">● </span>':""}${esc(r.name||"নাম নেই")}</td><td class="n">${ago==null?"—":ago===0?"আজ":bn(ago)+" দিন আগে"}</td><td class="n">${bn(s.streak)}</td><td class="n">${bn(s.last7)}</td><td class="n">${bn(s.known)} / ${bn(s.seen)}</td><td class="n">${bn(s.listens)}</td><td class="n">${s.avg==null?"—":bn(s.avg)+"%"}</td></tr>`}).join("")}</tbody></table></div>`:`<div class="card">এখনো কোনো ছাত্র চর্চা শুরু করেনি। এই পেজটি ছাত্রদের সাথে শেয়ার করুন (Share মেনু থেকে)।</div>`}`}
+
+/* ---------- render ---------- */
+function render(scrollTop){
+  const tabs=[["listen","শোনা"],["cards","ফ্ল্যাশকার্ড"],["me","অগ্রগতি"]];if(cap.canEdit)tabs.push(["teacher","শিক্ষক"]);
+  $("#tabs").style.setProperty("--n",tabs.length);
+  $("#tabs").innerHTML=S.name?tabs.map(([k,t])=>`<button type="button" class="tab" data-tab="${k}" aria-current="${S.tab===k}">${ICON[k]}${t}</button>`).join(""):"";
+  $("#who").innerHTML=S.name?`${esc(S.name)}<br>${bn(summary(P).streak)} দিন টানা`:"";
+  const y=window.scrollY;
+  $("#app").innerHTML=!S.name?vWelcome():S.tab==="listen"?vListen():S.tab==="cards"?vCards():S.tab==="me"?vMe():vTeacher();
+  if(scrollTop===false)window.scrollTo(0,y);else if(scrollTop)window.scrollTo(0,0);
+  if(S.playing&&S.cur>=0){const el=document.querySelector(`[data-line="${S.cur}"]`);if(el){const r=el.getBoundingClientRect();if(r.top<170||r.bottom>innerHeight-90)el.scrollIntoView({block:"center",behavior:"smooth"})}}
+}
+document.addEventListener("submit",e=>{e.preventDefault();if(e.target.id==="nameForm"){const v=$("#nm").value.trim();if(!v){toast("নাম লেখো");return}S.name=v;store.set("name",v);dirty=true;touch();render(true)}});
+document.addEventListener("change",e=>{if(e.target.id==="unitSel"){stopPlay();S.uid=e.target.value;store.set("uid",S.uid);S.quiz=null;S.cur=-1;render()}});
+document.addEventListener("click",e=>{const b=e.target.closest("button,[data-line],#flip");if(!b)return;const d=b.dataset;
+  if(d.tab){stopPlay();S.tab=d.tab;S.deck=null;if(d.tab==="teacher")watchTeacher();render(true);return}
+  if(d.lv){stopPlay();S.lv=d.lv;store.set("lv",S.lv);S.uid=null;S.quiz=null;render();return}
+  if(d.mode){stopPlay();S.mode=d.mode;S.cur=-1;render(false);return}
+  if(d.rate){S.rate=+d.rate;store.set("rate",S.rate);render(false);return}
+  if(d.line!=null){const i=+d.line;if(S.playing){playFrom(i)}else{stopTTS();S.cur=i;render(false);const l=curLines()[i];speak(l[1],l[0]).then(()=>{if(!S.playing&&S.cur===i){S.cur=-1;render(false)}})}return}
+  if(b.id==="playAll"){S.playing?stopPlay():playFrom(Math.max(0,S.cur));return}
+  if(b.id==="tShadow"){S.shadow=!S.shadow;render(false);return}if(b.id==="tHide"){S.hidejp=!S.hidejp;render(false);return}
+  if(b.id==="tTr"){S.tr=!S.tr;render(false);return}if(b.id==="tFuri"){S.furi=!S.furi;render(false);return}
+  if(b.id==="qPlay"){const it=S.quiz.items[S.quiz.i];stopTTS();speak(it.j,"",.8);return}
+  if(d.qopt!=null){const Q=S.quiz,it=Q.items[Q.i];Q.picked=+d.qopt;if(it.c[Q.picked]===it.ok)Q.score++;stopTTS();speak(it.j,"",.8);render(false);return}
+  if(b.id==="qNext"){const Q=S.quiz;Q.i++;Q.picked=null;if(Q.i>=Q.items.length){const k=S.lv+"."+Q.uid;P.quiz[k]=Math.max(P.quiz[k]||0,Math.round(Q.score/Q.items.length*10));touch()}render(false);if(Q.i<Q.items.length)setTimeout(()=>speak(Q.items[Q.i].j,"",.8),250);return}
+  if(b.id==="qAgain"){S.quiz=null;render(false);return}
+  if(d.dir){S.rev=d.dir==="bj";render(false);return}
+  if(d.deck){startDeck(d.deck);window.scrollTo(0,0);return}
+  if(b.id==="deckBack"){S.deck=null;render(true);return}
+  if(b.id==="flip"){S.flip=!S.flip;if(S.flip){const c=ALLCARDS[S.deck.ids[S.deck.i]];stopTTS();speak(c.t==="k"?c.w[0][0]:c.j,"",.85)}render(false);return}
+  if(d.rateCard!=null){rateCard(+d.rateCard);return}
+  if(b.id==="cardSay"){const c=ALLCARDS[S.deck.ids[S.deck.i]];stopTTS();speak(c.t==="k"?c.w[0][0]:c.j,"",.85);return}
+});
+document.addEventListener("keydown",e=>{if(S.tab!=="cards"||!S.deck||e.target.matches("input"))return;if(e.key===" "||e.key==="Enter"){e.preventDefault();$("#flip")?.click()}else if(S.flip&&/^[123]$/.test(e.key))rateCard(+e.key-1)});
+document.addEventListener("visibilitychange",()=>{if(document.visibilityState==="hidden")save()});
+
+(async()=>{try{const [db,user]=await Promise.all([window.claude?.use?.("db")??null,window.claude?.use?.("user")??null]);cap.db=db;cap.user=user;
+  if(user){cap.uid=await user.id();cap.canEdit=!!(await user.canEdit())}
+  if(db&&cap.uid){try{const sn=await db.doc("progress/"+cap.uid).get();if(sn.exists){const r=sn.data();
+    for(const id in r.srs||{}){const a=P.srs[id];if(!a||(r.srs[id][1]>a[1]))P.srs[id]=r.srs[id]}
+    for(const k in r.listen||{})P.listen[k]=Math.max(P.listen[k]||0,r.listen[k]);for(const k in r.quiz||{})P.quiz[k]=Math.max(P.quiz[k]||0,r.quiz[k]);
+    P.days=[...new Set([...(P.days||[]),...(r.days||[])])].sort().slice(-90);if(!S.name&&r.name){S.name=r.name;store.set("name",S.name)}store.set("prog",P)}}catch(e){}}
+  if(cap.canEdit)watchTeacher();if(S.name&&(Object.keys(P.srs).length||P.days.length)){dirty=true;save()}}catch(e){}render(false)})();
+render(true);
+</script>
