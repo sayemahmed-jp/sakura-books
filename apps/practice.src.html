@@ -131,7 +131,7 @@ const rb=s=>esc(s).replace(/\{([^|{}]+)\|([^{}]+)\}/g,"<ruby>$1<rt>$2</rt></ruby
 const TTS=/*TTS*/{};
 const reading=s=>{const t=TTS[s];return (t!=null?t:String(s).replace(/\{([^|{}]+)\|([^{}]+)\}/g,"$2")).replace(/[（）()]/g," ").replace(/〜/g,"")};
 const plain=s=>String(s).replace(/\{([^|{}]+)\|([^{}]+)\}/g,"$1");
-const bn=n=>String(n).replace(/\d/g,d=>"০১২৩৪৫৬৭৮৯"[d]);
+const bn=n=>String(n).replace(/\d/g,d=>"0123456789"[d]);
 const store={get(k,d){try{const v=localStorage.getItem("sp."+k);return v==null?d:JSON.parse(v)}catch(e){return d}},set(k,v){try{localStorage.setItem("sp."+k,JSON.stringify(v))}catch(e){}}};
 const LOGO=sz=>{let p='';for(let i=0;i<5;i++)p+=`<path transform="rotate(${i*72})" d="M0 -2.5 C-6.5 -7 -7.5 -14 -4 -18 L0 -15 L4 -18 C7.5 -14 6.5 -7 0 -2.5Z"/>`;return `<svg width="${sz}" height="${sz}" viewBox="-20 -20 40 40" aria-hidden="true"><g fill="var(--sakura)">${p}</g><circle r="3" fill="var(--ink)"/></svg>`};
 $("#logo").innerHTML=LOGO(24);
@@ -175,8 +175,8 @@ function unit(){const L=units(S.lv);return L.find(u=>u.id===S.uid)||L.find(u=>u.
 function lessonPicker(){return `<div class="row" style="margin-block:12px"><div class="seg" role="group" aria-label="লেভেল">${["N5","N4"].map(l=>`<button type="button" data-lv="${l}" aria-pressed="${S.lv===l}">${l}</button>`).join("")}</div><select id="unitSel" aria-label="পাঠ">${units(S.lv).map(u=>`<option value="${u.id}" ${u.id===unit().id?"selected":""}>${esc(label(u))} · ${esc(plain(u.title))}</option>`).join("")}</select></div>`}
 
 /* ---------- views ---------- */
-function vWelcome(){return `<section class="hero"><div style="color:var(--sakura-deep);font-weight:700;font-size:13px;letter-spacing:.1em">さくら日本語学院 · প্রতিদিনের চর্চা</div><h1>প্রতিদিন ১৫ মিনিট</h1><p class="lead">বইয়ের প্রতিটি পাঠের কথোপকথন শোনো, শোনার কুইজ দাও, আর ফ্ল্যাশকার্ডে শব্দ ও কাঞ্জি মুখস্থ করো। তোমার অগ্রগতি শিক্ষক দেখতে পাবেন।</p></section>
-<form class="card" id="nameForm"><div class="field" style="margin:0 0 12px"><label for="nm"><b>তোমার নাম ও রোল</b></label><input id="nm" autocomplete="name" placeholder="যেমন: রাহিম, রোল ১২" value="${esc(S.name)}"></div><button class="btn" type="submit">শুরু করো</button></form>`}
+function vWelcome(){return `<section class="hero"><div style="color:var(--sakura-deep);font-weight:700;font-size:13px;letter-spacing:.1em">さくら日本語学院 · প্রতিদিনের চর্চা</div><h1>প্রতিদিন 15 মিনিট</h1><p class="lead">বইয়ের প্রতিটি পাঠের কথোপকথন শোনো, শোনার কুইজ দাও, আর ফ্ল্যাশকার্ডে শব্দ ও কাঞ্জি মুখস্থ করো। তোমার অগ্রগতি শিক্ষক দেখতে পাবেন।</p></section>
+<form class="card" id="nameForm"><div class="field" style="margin:0 0 12px"><label for="nm"><b>তোমার নাম ও রোল</b></label><input id="nm" autocomplete="name" placeholder="যেমন: রাহিম, রোল 12" value="${esc(S.name)}"></div><button class="btn" type="submit">শুরু করো</button></form>`}
 
 function vListen(){const u=unit();
   let h=`<h2 class="h2">শোনা · 聴解</h2>${lessonPicker()}
@@ -256,12 +256,12 @@ function summary(p){const ids=Object.keys(p.srs||{}).filter(id=>ALLCARDS[id]);co
 function vMe(){const s=summary(P);const tot=Object.keys(ALLCARDS).length;
   return `<h2 class="h2">আমার অগ্রগতি</h2><div class="stats">
   <div class="stat"><b>${bn(s.streak)}</b><span>দিন টানা চর্চা</span></div>
-  <div class="stat"><b>${bn(s.last7)} / ৭</b><span>গত সপ্তাহে চর্চার দিন</span></div>
+  <div class="stat"><b>${bn(s.last7)} / 7</b><span>গত সপ্তাহে চর্চার দিন</span></div>
   <div class="stat"><b>${bn(s.seen)}</b><span>শুরু করা কার্ড (মোট ${bn(tot)})</span></div>
-  <div class="stat"><b>${bn(s.known)}</b><span>পাকা করে শেখা কার্ড (৩ বার সঠিক)</span></div>
+  <div class="stat"><b>${bn(s.known)}</b><span>পাকা করে শেখা কার্ড (3 বার সঠিক)</span></div>
   <div class="stat"><b>${bn(s.listens)}</b><span>বার শোনা শেষ করেছ</span></div>
   <div class="stat"><b>${s.avg==null?"—":bn(s.avg)+"%"}</b><span>শোনার কুইজে গড় (সেরা ফল)</span></div></div>
-  <div class="card" style="margin-top:14px"><b>লক্ষ্য:</b> প্রতিদিন ১টি কথোপকথন শোনা, ১টি শোনার কুইজ আর আজকের রিভিউ শেষ করা। সপ্তাহে অন্তত ৫ দিন।</div>
+  <div class="card" style="margin-top:14px"><b>লক্ষ্য:</b> প্রতিদিন 1টি কথোপকথন শোনা, 1টি শোনার কুইজ আর আজকের রিভিউ শেষ করা। সপ্তাহে অন্তত 5 দিন।</div>
   <p class="fs" style="margin-top:14px">${cap.db&&cap.uid?"তোমার অগ্রগতি অনলাইনে সেভ হচ্ছে, শিক্ষক দেখতে পাবেন।":"অনলাইন সেভিং চালু নেই, তাই অগ্রগতি শুধু এই ফোনে সেভ হচ্ছে।"}</p>
   <form id="nameForm" class="field"><label for="nm">নাম ও রোল</label><div class="row"><input id="nm" value="${esc(S.name)}" style="flex:1;min-width:0"><button class="btn ghost" type="submit">বদলাও</button></div></form>`}
 
@@ -270,8 +270,8 @@ function watchTeacher(){if(!cap.db||!cap.canEdit||unsubT)return;try{unsubT=cap.d
 function vTeacher(){if(!cap.canEdit)return `<p class="lead">এই অংশটি শুধু শিক্ষকদের জন্য।</p>`;
   if(!TROWS)return `<h2 class="h2">শিক্ষক প্যানেল</h2><p class="lead">ছাত্রদের অগ্রগতি লোড হচ্ছে…</p>`;
   const rows=TROWS.map(r=>({r,s:summary(r)})).sort((a,b)=>(b.r.updatedAt||0)-(a.r.updatedAt||0));
-  return `<h2 class="h2">শিক্ষক প্যানেল</h2><p class="lead">ছাত্ররা এই অ্যাপে যা চর্চা করে তা এখানে দেখা যায়। লাল চিহ্ন মানে গত ৩ দিন কোনো চর্চা নেই।</p>
-  ${rows.length?`<div class="tw"><table><thead><tr><th>ছাত্র/ছাত্রী</th><th>শেষ চর্চা</th><th>টানা দিন</th><th>গত ৭ দিন</th><th>শেখা কার্ড</th><th>শোনা</th><th>কুইজ গড়</th></tr></thead><tbody>${rows.map(({r,s})=>{const ago=r.updatedAt?Math.floor((Date.now()-r.updatedAt)/DAY):null;return `<tr><td>${ago!=null&&ago>=3?'<span style="color:var(--ng)">● </span>':""}${esc(r.name||"নাম নেই")}</td><td class="n">${ago==null?"—":ago===0?"আজ":bn(ago)+" দিন আগে"}</td><td class="n">${bn(s.streak)}</td><td class="n">${bn(s.last7)}</td><td class="n">${bn(s.known)} / ${bn(s.seen)}</td><td class="n">${bn(s.listens)}</td><td class="n">${s.avg==null?"—":bn(s.avg)+"%"}</td></tr>`}).join("")}</tbody></table></div>`:`<div class="card">এখনো কোনো ছাত্র চর্চা শুরু করেনি। এই পেজটি ছাত্রদের সাথে শেয়ার করুন (Share মেনু থেকে)।</div>`}`}
+  return `<h2 class="h2">শিক্ষক প্যানেল</h2><p class="lead">ছাত্ররা এই অ্যাপে যা চর্চা করে তা এখানে দেখা যায়। লাল চিহ্ন মানে গত 3 দিন কোনো চর্চা নেই।</p>
+  ${rows.length?`<div class="tw"><table><thead><tr><th>ছাত্র/ছাত্রী</th><th>শেষ চর্চা</th><th>টানা দিন</th><th>গত 7 দিন</th><th>শেখা কার্ড</th><th>শোনা</th><th>কুইজ গড়</th></tr></thead><tbody>${rows.map(({r,s})=>{const ago=r.updatedAt?Math.floor((Date.now()-r.updatedAt)/DAY):null;return `<tr><td>${ago!=null&&ago>=3?'<span style="color:var(--ng)">● </span>':""}${esc(r.name||"নাম নেই")}</td><td class="n">${ago==null?"—":ago===0?"আজ":bn(ago)+" দিন আগে"}</td><td class="n">${bn(s.streak)}</td><td class="n">${bn(s.last7)}</td><td class="n">${bn(s.known)} / ${bn(s.seen)}</td><td class="n">${bn(s.listens)}</td><td class="n">${s.avg==null?"—":bn(s.avg)+"%"}</td></tr>`}).join("")}</tbody></table></div>`:`<div class="card">এখনো কোনো ছাত্র চর্চা শুরু করেনি। এই পেজটি ছাত্রদের সাথে শেয়ার করুন (Share মেনু থেকে)।</div>`}`}
 
 /* ---------- render ---------- */
 function render(scrollTop){

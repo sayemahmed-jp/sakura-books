@@ -308,7 +308,7 @@ const rb=s=>esc(s).replace(/\{([^|{}]+)\|([^{}]+)\}/g,"<ruby>$1<rt>$2</rt></ruby
 const TTS=/*TTS*/{};
 const reading=s=>{const t=TTS[s];return (t!=null?t:String(s).replace(/\{([^|{}]+)\|([^{}]+)\}/g,"$2")).replace(/[（）()]/g," ").replace(/〜/g,"")};
 const plain=s=>String(s).replace(/\{([^|{}]+)\|([^{}]+)\}/g,"$1");
-const BN="০১২৩৪৫৬৭৮৯", bn=n=>String(n).replace(/\d/g,d=>BN[d]);
+const BN="0123456789", bn=n=>String(n).replace(/\d/g,d=>BN[d]);
 function hash(s){let h=2166136261;for(const ch of s){h^=ch.charCodeAt(0);h=Math.imul(h,16777619)}return h>>>0}
 function order(id,n){let a=hash(id)||1;const idx=[...Array(n).keys()];for(let i=n-1;i>0;i--){a=(Math.imul(a,1103515245)+12345)>>>0;const j=a%(i+1);[idx[i],idx[j]]=[idx[j],idx[i]]}return idx}
 const LOGO=(sz)=>{let p='';for(let i=0;i<5;i++)p+=`<path transform="rotate(${i*72})" d="M0 -2.5 C-6.5 -7 -7.5 -14 -4 -18 L0 -15 L4 -18 C7.5 -14 6.5 -7 0 -2.5Z"/>`;return `<svg class="logo-mark" width="${sz}" height="${sz}" viewBox="-20 -20 40 40" aria-hidden="true"><g fill="var(--sakura)">${p}</g><circle r="3" fill="var(--ink)"/><g stroke="var(--ink)" stroke-width="1" stroke-linecap="round">${[0,72,144,216,288].map(a=>`<line transform="rotate(${a+36})" x1="0" y1="-3" x2="0" y2="-6.5"/>`).join('')}</g></svg>`};
@@ -337,7 +337,7 @@ function kanaGrid(list,kata,cls){return `<div class="kana ${cls||""}">${list.map
 
 /* ---------- pieces ---------- */
 const label=u=>u.kind==="lesson"?`第${u.no}課`:u.kind==="kana"?(u.id==="k1"?"かな 1":"かな 2"):"付録";
-const labelBn=u=>u.kind==="lesson"?`পাঠ ${bn(u.no)}`:u.kind==="kana"?(u.id==="k1"?"কানা ১":"কানা ২"):"পরিশিষ্ট";
+const labelBn=u=>u.kind==="lesson"?`পাঠ ${bn(u.no)}`:u.kind==="kana"?(u.id==="k1"?"কানা 1":"কানা 2"):"পরিশিষ্ট";
 const AV={'ラヒム':'rahim','ミン':'min','ゆい':'yui','田中先生':'sensei'};const AVI={'ラヒム':'ラ','ミン':'ミ','ゆい':'ゆ','田中先生':'田','店員':'店','店長':'長','医者':'医'};
 const SECC={'会話':'c1','ことば':'c2','文法':'c3','漢字':'c4','読解':'c6','練習':'c5','ルール':'c3','ひらがな表':'c1','カタカナ表':'c1'};
 function secH(ja,bnT,extra){return `<div class="sec-h ${SECC[ja]||'c2'}"><h2>${ja}</h2><span>${bnT}</span><div class="sp"></div>${extra||""}</div>`}
@@ -362,7 +362,7 @@ function unitHtml(u){
     const k=u.script==="kata";
     body+=`<section class="sec intro">${secH(k?"カタカナとは":"ひらがなとは","পরিচিতি")}${u.intro.map(p=>`<p>${esc(p)}</p>`).join("")}</section>`;
     body+=`<section class="sec">${secH(k?"カタカナ表":"ひらがな表","অক্ষরের তালিকা",PRINT?"":`<span class="muted" style="font-size:13px">অক্ষরে চাপ দিলে উচ্চারণ শুনবে</span>`)}
-      <div class="ktitle">মূল ৪৬টি অক্ষর (清音)</div>${kanaGrid(H,k)}
+      <div class="ktitle">মূল 46টি অক্ষর (清音)</div>${kanaGrid(H,k)}
       <div class="ktitle">゛ ও ゜ যুক্ত অক্ষর (濁音・半濁音)</div>${kanaGrid(D,k)}
       <div class="ktitle">ছোট ゃ ゅ ょ যুক্ত অক্ষর (拗音)</div>${kanaGrid(Y,k,"y")}</section>`;
     body+=`<section class="sec">${secH("ルール","নিয়ম")}${u.notes.map((n,i)=>`<div class="gcard"><div class="gpt"><span class="num">${i+1}</span><h3>${rb(n.t)}</h3></div><p>${rb(n.b)}</p></div>`).join("")}</section>`;
@@ -393,7 +393,7 @@ function coverHtml(){
   <p>জাপানে রাহিমের দ্বিতীয় বছর: নতুন বাসা, পার্ট-টাইম কাজ, অসুখ, ভ্রমণ, ইন্টারভিউ আর সমাপনী অনুষ্ঠান। প্রতিটি পাঠে কথোপকথন, শব্দ, ব্যাকরণ, কাঞ্জি, পরীক্ষার ধরনের পড়া (読解), অনুশীলন আর জাপানের জীবন নিয়ে টিপস, সবকিছুর ব্যাখ্যা বাংলায়।</p>
   <div class="byline"><div><b>রচনা ও সম্পাদনা: ${AUTHOR.bn}</b><span>編著　${AUTHOR.ja}（${AUTHOR.en}）· 代表, さくら日本語学院</span></div></div>
   <div class="stats"><div><b>${bn(c.l)}</b><span>পাঠ</span></div><div><b>${bn(c.k)}</b><span>কাঞ্জি</span></div><div><b>${bn(c.v)}</b><span>শব্দ ও বাক্যাংশ</span></div></div>
-  <div class="howto"><b>কীভাবে পড়বেন</b><span>১. কথোপকথন শুনুন (▶), অনুবাদ বন্ধ করে বোঝার চেষ্টা করুন।</span><span>২. নতুন শব্দ আর ব্যাকরণ পড়ুন, উদাহরণগুলো জোরে বলুন।</span><span>৩. 読解 অংশটি সময় ধরে পড়ুন, তারপর অনুশীলনের প্রশ্ন করুন।</span><span>৪. \"কথা বলো\" কাজটি সঙ্গীর সাথে করুন।</span><span>৫. কাঞ্জির পড়া মুখস্থ হলে উপরের \"ふりがな\" বন্ধ করে নিজেকে যাচাই করুন।</span></div></section>
+  <div class="howto"><b>কীভাবে পড়বেন</b><span>1. কথোপকথন শুনুন (▶), অনুবাদ বন্ধ করে বোঝার চেষ্টা করুন।</span><span>2. নতুন শব্দ আর ব্যাকরণ পড়ুন, উদাহরণগুলো জোরে বলুন।</span><span>3. 読解 অংশটি সময় ধরে পড়ুন, তারপর অনুশীলনের প্রশ্ন করুন।</span><span>4. \"কথা বলো\" কাজটি সঙ্গীর সাথে করুন।</span><span>5. কাঞ্জির পড়া মুখস্থ হলে উপরের \"ふりがな\" বন্ধ করে নিজেকে যাচাই করুন।</span></div></section>
   ${g("第1〜12課",u=>u.kind==="lesson"&&u.no<=12)}${g("第13〜24課",u=>u.kind==="lesson"&&u.no>12)}${g("付録",u=>u.kind==="ref")}
   <p class="foot">© さくら日本語学院 (Sakura Japanese Institute) · রচনা ও সম্পাদনা: ${AUTHOR.bn} (${AUTHOR.en})। এই বইয়ের সব কথোপকথন, ব্যাখ্যা আর অনুশীলন স্কুলের নিজস্ব।</p>`;
 }
@@ -453,8 +453,8 @@ function printBook(){
   if(FILL){document.querySelectorAll(".tmark").forEach(m=>m.remove());
     let n=0;document.querySelectorAll(".topic").forEach(d=>{const h=FILL[d.dataset.tid];if(h&&h>=14)d.insertAdjacentHTML("beforeend",filler(h,n++))});}
 }
-const QUOTES=[["{継続|けいぞく}は{力|ちから}なり","ধারাবাহিকতাই শক্তি। প্রতিদিন একটু করে পড়াই সবচেয়ে বড় শক্তি।"],["{千里|せんり}の{道|みち}も{一歩|いっぽ}から","হাজার মাইলের পথও শুরু হয় এক পা দিয়ে।"],["{七転|ななころ}び{八起|やお}き","সাতবার পড়লে আটবার উঠে দাঁড়াও।"],["{習|なら}うより{慣|な}れろ","শুধু শেখার চেয়ে বারবার ব্যবহার করে অভ্যস্ত হও।"],["{石|いし}の{上|うえ}にも{三年|さんねん}","ঠান্ডা পাথরও তিন বছর বসে থাকলে গরম হয়। ধৈর্য ধরলে ফল আসবেই।"],["{塵|ちり}も{積|つ}もれば{山|やま}となる","ধুলো জমতে জমতেও পাহাড় হয়। প্রতিদিনের ৫টি শব্দই একদিন ৫০০ হবে।"]];
-const TIPS=[["প্রতিদিন ১৫ মিনিট","Anki-তে প্রতিদিন নতুন ১০টি আর পুরনো কার্ডগুলো রিভিউ করো। একদিনে ২ ঘণ্টার চেয়ে প্রতিদিন ১৫ মিনিট বেশি কাজে দেয়।"],["শ্যাডোয়িং","অডিও শুনে সাথে সাথে একই কথা বলো। উচ্চারণ আর শোনা দুটোই একসাথে উন্নত হয়।"],["ভুল করতে ভয় নেই","ক্লাসে ভুল বলাই শেখার অংশ। যত বেশি বলবে, তত দ্রুত শিখবে।"],["ふりがな ছাড়া পড়ো","একটা পাঠ শেষ হলে ফুরিগানা ঢেকে কাঞ্জিগুলো পড়ার চেষ্টা করো।"],["নিজের বাক্য বানাও","প্রতিটি নতুন ব্যাকরণ দিয়ে নিজের জীবন নিয়ে ৩টি বাক্য লেখো।"],["জোরে পড়ো","কথোপকথন অন্তত ৩ বার জোরে পড়ো, চরিত্র বদলে বদলে।"]];
+const QUOTES=[["{継続|けいぞく}は{力|ちから}なり","ধারাবাহিকতাই শক্তি। প্রতিদিন একটু করে পড়াই সবচেয়ে বড় শক্তি।"],["{千里|せんり}の{道|みち}も{一歩|いっぽ}から","হাজার মাইলের পথও শুরু হয় এক পা দিয়ে।"],["{七転|ななころ}び{八起|やお}き","সাতবার পড়লে আটবার উঠে দাঁড়াও।"],["{習|なら}うより{慣|な}れろ","শুধু শেখার চেয়ে বারবার ব্যবহার করে অভ্যস্ত হও।"],["{石|いし}の{上|うえ}にも{三年|さんねん}","ঠান্ডা পাথরও তিন বছর বসে থাকলে গরম হয়। ধৈর্য ধরলে ফল আসবেই।"],["{塵|ちり}も{積|つ}もれば{山|やま}となる","ধুলো জমতে জমতেও পাহাড় হয়। প্রতিদিনের 5টি শব্দই একদিন 500 হবে।"]];
+const TIPS=[["প্রতিদিন 15 মিনিট","Anki-তে প্রতিদিন নতুন 10টি আর পুরনো কার্ডগুলো রিভিউ করো। একদিনে 2 ঘণ্টার চেয়ে প্রতিদিন 15 মিনিট বেশি কাজে দেয়।"],["শ্যাডোয়িং","অডিও শুনে সাথে সাথে একই কথা বলো। উচ্চারণ আর শোনা দুটোই একসাথে উন্নত হয়।"],["ভুল করতে ভয় নেই","ক্লাসে ভুল বলাই শেখার অংশ। যত বেশি বলবে, তত দ্রুত শিখবে।"],["ふりがな ছাড়া পড়ো","একটা পাঠ শেষ হলে ফুরিগানা ঢেকে কাঞ্জিগুলো পড়ার চেষ্টা করো।"],["নিজের বাক্য বানাও","প্রতিটি নতুন ব্যাকরণ দিয়ে নিজের জীবন নিয়ে 3টি বাক্য লেখো।"],["জোরে পড়ো","কথোপকথন অন্তত 3 বার জোরে পড়ো, চরিত্র বদলে বদলে।"]];
 function fuji(){return `<svg viewBox="0 0 600 260" preserveAspectRatio="xMidYMid meet"><circle cx="455" cy="78" r="38" fill="#f2a7be" opacity=".55"/><path d="M60 230 L250 70 Q300 40 350 70 L540 230Z" fill="#2c3e8f" opacity=".85"/><path d="M250 70 Q300 40 350 70 L382 98 L360 92 L340 106 L318 90 L300 104 L282 90 L262 106 L240 92 L218 98Z" fill="#fff"/>${[0,1,2,3].map(r=>`<g fill="none" stroke="#c4577a" stroke-width="2" opacity="${.5-r*.08}">${Array.from({length:12},(_,i)=>`<path d="M${i*54-20+(r%2)*27} ${236+r*8} a27 27 0 0 1 54 0"/>`).join("")}</g>`).join("")}<g fill="#c4577a" opacity=".5">${[[120,60,1],[170,30,.7],[520,150,.8],[90,150,.6]].map(([x,y,s])=>`<g transform="translate(${x} ${y}) scale(${s}) rotate(${x%60})">${[0,72,144,216,288].map(a=>`<g transform="rotate(${a})">${PETAL}</g>`).join("")}</g>`).join("")}</g></svg>`}
 function branch(){const bl=[[150,95,1.4],[230,70,1.1],[300,98,1.6],[372,64,1.2],[440,92,1.4],[505,60,1],[260,130,.9],[400,128,1]];
   return `<svg viewBox="0 0 600 260" preserveAspectRatio="xMidYMid meet"><path d="M10 40 C120 70 200 120 300 92 S470 40 590 70" fill="none" stroke="#6b4a3a" stroke-width="7" stroke-linecap="round"/><path d="M250 100 C262 120 268 128 262 140 M395 80 C402 100 408 112 402 128 M300 92 C310 78 340 62 372 64" fill="none" stroke="#6b4a3a" stroke-width="4" stroke-linecap="round"/>${bl.map(([x,y,s],i)=>`<g transform="translate(${x} ${y}) scale(${s}) rotate(${i*23})"><g fill="${i%3?"#f2a7be":"#c4577a"}">${[0,72,144,216,288].map(a=>`<g transform="rotate(${a})">${PETAL}</g>`).join("")}</g><circle r="3" fill="#a13f60"/></g>`).join("")}${[[90,170,.5,20],[180,210,.4,70],[340,190,.45,10],[470,220,.35,50],[540,170,.5,30],[260,235,.3,80]].map(([x,y,s,r])=>`<path transform="translate(${x} ${y}) scale(${s}) rotate(${r})" d="M0 -2.5 C-6.5 -7 -7.5 -14 -4 -18 L0 -15 L4 -18 C7.5 -14 6.5 -7 0 -2.5Z" fill="#f2a7be"/>`).join("")}</svg>`}

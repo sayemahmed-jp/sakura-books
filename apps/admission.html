@@ -91,15 +91,15 @@ fieldset{border:0;padding:0;margin:0}
 const SCHOOL={
   wa:"+81 70-9222-2401", waDigits:"817092222401",
   address:"চর বক্তাবলী, ফতুল্লা, নারায়ণগঞ্জ",
-  opening:"২০২৬ (উদ্বোধনের প্রস্তুতি চলছে)",
+  opening:"2026 (উদ্বোধনের প্রস্তুতি চলছে)",
   web:"sayemahmed-jp.github.io/sakura-japanese-institute"
 };
 const COURSES=[
-  ["N5 কোর্স","৩ মাস · ১৫০ ঘণ্টা","হিরাগানা-কাতাকানা থেকে শুরু, ~১০০ কাঞ্জি, মৌলিক ব্যাকরণ ও আত্মপরিচয়","২০,০০০ টাকা"],
-  ["N4 কোর্স","৩ মাস · ১৫০ ঘণ্টা","~৩০০ কাঞ্জি, দৈনন্দিন কথোপকথন, জাপানের স্কুলের ইন্টারভিউ অনুশীলন","২০,০০০ টাকা"],
-  ["N3 কোর্স (ঐচ্ছিক)","৪ মাস · ১৫০ ঘণ্টা","মধ্যম স্তরের পড়া ও শোনা, ~৬৫০ কাঞ্জি","২২,০০০ টাকা"],
-  ["N5 + N4 প্যাকেজ","৬ মাস · ৩০০ ঘণ্টা","জাপানে পড়তে যাওয়ার জন্য প্রয়োজনীয় পুরো প্রস্তুতি","৩৫,০০০ টাকা"],
-  ["N5 + N4 + N3 প্যাকেজ","১০ মাস · ৪৫০ ঘণ্টা","সবচেয়ে মজবুত ভিত্তি","৪৫,০০০ টাকা"]
+  ["N5 কোর্স","3 মাস · 150 ঘণ্টা","হিরাগানা-কাতাকানা থেকে শুরু, ~100 কাঞ্জি, মৌলিক ব্যাকরণ ও আত্মপরিচয়","20,000 টাকা"],
+  ["N4 কোর্স","3 মাস · 150 ঘণ্টা","~300 কাঞ্জি, দৈনন্দিন কথোপকথন, জাপানের স্কুলের ইন্টারভিউ অনুশীলন","20,000 টাকা"],
+  ["N3 কোর্স (ঐচ্ছিক)","4 মাস · 150 ঘণ্টা","মধ্যম স্তরের পড়া ও শোনা, ~650 কাঞ্জি","22,000 টাকা"],
+  ["N5 + N4 প্যাকেজ","6 মাস · 300 ঘণ্টা","জাপানে পড়তে যাওয়ার জন্য প্রয়োজনীয় পুরো প্রস্তুতি","35,000 টাকা"],
+  ["N5 + N4 + N3 প্যাকেজ","10 মাস · 450 ঘণ্টা","সবচেয়ে মজবুত ভিত্তি","45,000 টাকা"]
 ];
 /* Level test: correct answer always first; shown shuffled. band: k=kana, 5=N5, 4=N4 */
 const TEST=[
@@ -126,7 +126,7 @@ const TEST=[
 ];
 const $=s=>document.querySelector(s);
 const esc=s=>String(s??"").replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
-const bn=n=>String(n).replace(/\d/g,d=>"০১২৩৪৫৬৭৮৯"[d]);
+const bn=n=>String(n).replace(/\d/g,d=>"0123456789"[d]);
 function hash(s){let h=2166136261;for(const ch of s){h^=ch.charCodeAt(0);h=Math.imul(h,16777619)}return h>>>0}
 function order(id,n){let a=hash(id)||1;const idx=[...Array(n).keys()];for(let i=n-1;i>0;i--){a=(Math.imul(a,1103515245)+12345)>>>0;const j=a%(i+1);[idx[i],idx[j]]=[idx[j],idx[i]]}return idx}
 const store={get(k,d){try{const v=localStorage.getItem("sa."+k);return v==null?d:JSON.parse(v)}catch(e){return d}},set(k,v){try{localStorage.setItem("sa."+k,JSON.stringify(v))}catch(e){}}};
@@ -144,18 +144,18 @@ function placement(ans){let k=0,f=0,g=0;TEST.forEach((t,i)=>{if(ans[i]===0){if(t
 function vInfo(){return `<section class="hero"><div class="kick">さくら日本語学院 · SAKURA JAPANESE INSTITUTE</div><h1>জাপানি শিখুন, জাপানের পথে এগিয়ে যান</h1><p>নারায়ণগঞ্জে আধুনিক জাপানি ভাষা শিক্ষা: নিজস্ব বাংলা ব্যাখ্যার বই, প্রজেক্টরে ক্লাস, অনলাইন মক টেস্ট আর প্রতিদিনের প্র্যাকটিস অ্যাপ। শিক্ষকরা জাপানে পড়াশোনা ও কাজ করা অভিজ্ঞ বাংলাদেশি।</p><div class="row" style="margin-top:6px"><button type="button" class="btn" data-go="form">ভর্তির আবেদন করুন</button><button type="button" class="btn ghost" data-go="test">লেভেল টেস্ট দিন</button></div></section>
 <h2 class="h2">এক নজরে</h2><div class="facts">
 <div class="fact"><b>ঠিকানা</b><span>${esc(SCHOOL.address)}</span></div>
-<div class="fact"><b>ক্লাস</b><span>সপ্তাহে ৬ দিন (শনি–বৃহস্পতি), দিনে ২ ঘণ্টা</span></div>
+<div class="fact"><b>ক্লাস</b><span>সপ্তাহে 6 দিন (শনি–বৃহস্পতি), দিনে 2 ঘণ্টা</span></div>
 <div class="fact"><b>ব্যাচ</b><span>সকাল · সন্ধ্যা · অনলাইন</span></div>
-<div class="fact"><b>ক্লাসের আকার</b><span>সর্বোচ্চ ২০ জন</span></div>
+<div class="fact"><b>ক্লাসের আকার</b><span>সর্বোচ্চ 20 জন</span></div>
 <div class="fact"><b>খোলা</b><span>${esc(SCHOOL.opening)}</span></div>
 <div class="fact"><b>যোগাযোগ (WhatsApp)</b><span class="sel">${esc(SCHOOL.wa)}</span></div></div>
 <h2 class="h2">কোর্স ও ফি</h2><div class="tw"><table><thead><tr><th>কোর্স</th><th>সময়</th><th>কী শিখবেন</th><th>ফি</th></tr></thead><tbody>${COURSES.map(c=>`<tr><td><b>${c[0]}</b></td><td>${c[1]}</td><td>${c[2]}</td><td class="n">${c[3]}</td></tr>`).join("")}</tbody></table></div>
-<p class="note">প্রথম ৩টি ক্লাস বিনামূল্যে। কোর্স শুরুর ৩ দিন আগে বাতিল করলে ৮০% ফেরত। জাপানে পড়তে যেতে চাইলে N5 আর N4 মিলিয়ে কমপক্ষে ৬ মাস (৩০০ ঘণ্টা) ও ৮০% উপস্থিতি লাগবে।</p>
-<h2 class="h2">ভর্তির ধাপ</h2><ol style="padding-left:20px;margin:0;display:grid;gap:6px"><li>অনলাইনে আবেদন ফর্ম পূরণ করুন (৩ মিনিট)।</li><li>আগে থেকে জাপানি জানলে ১০ মিনিটের লেভেল টেস্ট দিন, আমরা সঠিক ব্যাচ বলে দেব।</li><li>আমরা ফোন বা WhatsApp-এ যোগাযোগ করব, তারপর ৩টি ফ্রি ক্লাসে আসুন।</li><li>ভালো লাগলে ভর্তি ফি দিয়ে কোর্স শুরু।</li></ol>`}
+<p class="note">প্রথম 3টি ক্লাস বিনামূল্যে। কোর্স শুরুর 3 দিন আগে বাতিল করলে 80% ফেরত। জাপানে পড়তে যেতে চাইলে N5 আর N4 মিলিয়ে কমপক্ষে 6 মাস (300 ঘণ্টা) ও 80% উপস্থিতি লাগবে।</p>
+<h2 class="h2">ভর্তির ধাপ</h2><ol style="padding-left:20px;margin:0;display:grid;gap:6px"><li>অনলাইনে আবেদন ফর্ম পূরণ করুন (3 মিনিট)।</li><li>আগে থেকে জাপানি জানলে 10 মিনিটের লেভেল টেস্ট দিন, আমরা সঠিক ব্যাচ বলে দেব।</li><li>আমরা ফোন বা WhatsApp-এ যোগাযোগ করব, তারপর 3টি ফ্রি ক্লাসে আসুন।</li><li>ভালো লাগলে ভর্তি ফি দিয়ে কোর্স শুরু।</li></ol>`}
 
 function chips(name,opts,type="radio"){const v=S.form[name];return `<div class="chips">${opts.map(o=>`<label><input type="${type}" name="${name}" value="${esc(o)}" ${type==="radio"?(v===o?"checked":""):((v||[]).includes(o)?"checked":"")}>${esc(o)}</label>`).join("")}</div>`}
 function vForm(){const F=S.form;const exp=F.exp;
-  return `<h2 class="h2">ভর্তির আবেদন</h2><div class="steps"><span class="step" aria-current="true">১. তথ্য</span><span class="step">২. লেভেল টেস্ট (ঐচ্ছিক)</span><span class="step">৩. জমা</span></div>
+  return `<h2 class="h2">ভর্তির আবেদন</h2><div class="steps"><span class="step" aria-current="true">1. তথ্য</span><span class="step">2. লেভেল টেস্ট (ঐচ্ছিক)</span><span class="step">3. জমা</span></div>
 <form class="card" id="appForm" novalidate><div class="grid">
 <div class="f"><label for="f-name">নাম <span class="req">*</span></label><input id="f-name" name="name" autocomplete="name" value="${esc(F.name)}"></div>
 <div class="f"><label for="f-phone">মোবাইল নম্বর <span class="req">*</span></label><input id="f-phone" name="phone" inputmode="tel" autocomplete="tel" placeholder="01XXXXXXXXX" value="${esc(F.phone)}"></div>
@@ -177,10 +177,10 @@ ${S.err?`<p class="err" role="alert">${esc(S.err)}</p>`:""}
 <div class="row" style="margin-top:14px"><button class="btn" type="submit">${exp&&exp!=="একদম নতুন"?"পরের ধাপ: লেভেল টেস্ট":"পরের ধাপ"}</button><button type="button" class="btn line" data-go="info">ফিরে যান</button></div></form>`}
 
 function vTest(fromForm){const T=S.test;const n=Object.keys(T.ans).length;
-  if(T.done){const p=placement(T.ans);return `<h2 class="h2">লেভেল টেস্টের ফল</h2><div class="result"><div>সঠিক উত্তর: <b>${bn(p.total)} / ${bn(TEST.length)}</b> (কানা ${bn(p.k)}/৫ · N5 ${bn(p.f)}/৮ · N4 ${bn(p.g)}/৭)</div><div style="margin-top:6px">আমাদের পরামর্শ: <b>${esc(p.rec)}</b></div></div>
+  if(T.done){const p=placement(T.ans);return `<h2 class="h2">লেভেল টেস্টের ফল</h2><div class="result"><div>সঠিক উত্তর: <b>${bn(p.total)} / ${bn(TEST.length)}</b> (কানা ${bn(p.k)}/5 · N5 ${bn(p.f)}/8 · N4 ${bn(p.g)}/7)</div><div style="margin-top:6px">আমাদের পরামর্শ: <b>${esc(p.rec)}</b></div></div>
    <p class="note">এটা শুধু প্রাথমিক ধারণা। ফ্রি ক্লাসে শিক্ষক কথা বলে চূড়ান্ত ব্যাচ ঠিক করবেন।</p>
    <div class="row">${S.fromForm?`<button type="button" class="btn" data-go="submit">পরের ধাপ: আবেদন জমা</button>`:`<button type="button" class="btn" data-go="form">এবার ভর্তির আবেদন করুন</button>`}<button type="button" class="btn line" id="retest">আবার দিন</button></div>`}
-  return `<h2 class="h2">লেভেল টেস্ট</h2>${S.fromForm?`<div class="steps"><span class="step">১. তথ্য</span><span class="step" aria-current="true">২. লেভেল টেস্ট</span><span class="step">৩. জমা</span></div>`:""}<p class="note">২০টি প্রশ্ন, প্রায় ১০ মিনিট। না জানলে আন্দাজ না করে বাদ দিন, তাহলে ফল বেশি সঠিক হবে।</p>
+  return `<h2 class="h2">লেভেল টেস্ট</h2>${S.fromForm?`<div class="steps"><span class="step">1. তথ্য</span><span class="step" aria-current="true">2. লেভেল টেস্ট</span><span class="step">3. জমা</span></div>`:""}<p class="note">20টি প্রশ্ন, প্রায় 10 মিনিট। না জানলে আন্দাজ না করে বাদ দিন, তাহলে ফল বেশি সঠিক হবে।</p>
   <div class="meter" aria-hidden="true" style="margin-block:10px 16px"><i style="width:${n/TEST.length*100}%"></i></div>
   <div class="card">${TEST.map((t,i)=>{const ord=order("pt"+i,4);return `<div class="q"><div class="qn">প্রশ্ন ${bn(i+1)} · ${t.b==="k"?"কানা":t.b==="5"?"N5":"N4"}</div><div class="qq">${esc(t.q)}</div><div class="opts">${ord.map(ci=>`<button type="button" class="opt" data-ans="${i}:${ci}" aria-pressed="${T.ans[i]===ci}">${esc(t.c[ci])}</button>`).join("")}</div></div>`}).join("")}
   <div class="row"><button type="button" class="btn" id="finishTest">${n<TEST.length?`ফল দেখুন (${bn(TEST.length-n)}টি বাদ)`:"ফল দেখুন"}</button>${S.fromForm?`<button type="button" class="btn line" data-go="submit">টেস্ট ছাড়া জমা দিন</button>`:""}</div></div>`}
@@ -189,9 +189,9 @@ function summaryText(){const F=S.form;const p=S.test.done?placement(S.test.ans):
   const lines=["さくら日本語学院 · ভর্তির আবেদন",`নাম: ${F.name}`,`মোবাইল: ${F.phone}`+(F.wa?` · WhatsApp: ${F.wa}`:""),F.email?`ইমেইল: ${F.email}`:"",`বয়স: ${F.age}`,`শিক্ষা: ${F.edu}${F.eduYear?" ("+F.eduYear+")":""}`,F.area?`এলাকা: ${F.area}`:"",`কোর্স: ${F.course}`,`ব্যাচ: ${F.time}`,`জাপানি: ${F.exp}`,(F.goal||[]).length?`লক্ষ্য: ${F.goal.join(", ")}`:"",F.heard?`জেনেছেন: ${F.heard}`:"",p?`লেভেল টেস্ট: ${p.total}/20 · পরামর্শ: ${p.rec}`:"",F.msg?`বার্তা: ${F.msg}`:""];
   return lines.filter(Boolean).join("\n")}
 function vSubmit(){const t=summaryText();
-  if(S.sent)return `<h2 class="h2">ধন্যবাদ!</h2><div class="result"><b>${S.sent==="db"?"আপনার আবেদন জমা হয়েছে।":"শেষ ধাপ: আবেদনটি WhatsApp-এ পাঠান।"}</b><div>${S.sent==="db"?"১–২ দিনের মধ্যে আমরা ফোন বা WhatsApp-এ যোগাযোগ করব।":"নিচের বোতামে চাপ দিলে WhatsApp খুলবে, লেখাটি আগে থেকে বসানো থাকবে। শুধু Send চাপুন।"}</div></div>
+  if(S.sent)return `<h2 class="h2">ধন্যবাদ!</h2><div class="result"><b>${S.sent==="db"?"আপনার আবেদন জমা হয়েছে।":"শেষ ধাপ: আবেদনটি WhatsApp-এ পাঠান।"}</b><div>${S.sent==="db"?"1–2 দিনের মধ্যে আমরা ফোন বা WhatsApp-এ যোগাযোগ করব।":"নিচের বোতামে চাপ দিলে WhatsApp খুলবে, লেখাটি আগে থেকে বসানো থাকবে। শুধু Send চাপুন।"}</div></div>
    ${S.sent!=="db"?waBlock(t):""}<div class="row" style="margin-top:14px"><button type="button" class="btn line" data-go="info">মূল পাতায় যান</button></div>`;
-  return `<h2 class="h2">আবেদন জমা দিন</h2><div class="steps"><span class="step">১. তথ্য</span><span class="step">২. লেভেল টেস্ট</span><span class="step" aria-current="true">৩. জমা</span></div>
+  return `<h2 class="h2">আবেদন জমা দিন</h2><div class="steps"><span class="step">1. তথ্য</span><span class="step">2. লেভেল টেস্ট</span><span class="step" aria-current="true">3. জমা</span></div>
    <div class="card"><p style="margin-top:0">আপনার তথ্য একবার দেখে নিন:</p><div class="pre">${esc(t)}</div>${S.err?`<p class="err" role="alert">${esc(S.err)}</p>`:""}
    <div class="row" style="margin-top:14px"><button type="button" class="btn" id="send">আবেদন জমা দিন</button><button type="button" class="btn line" data-go="form">তথ্য বদলান</button></div></div>`}
 function waBlock(t){const url=`https://wa.me/${SCHOOL.waDigits}?text=${encodeURIComponent(t)}`;
@@ -205,7 +205,7 @@ function vTeacher(){if(!cap.canEdit)return `<p>এই অংশটি শুধ�
   <p class="note">WhatsApp দিয়ে পাঠানো আবেদন এখানে আসে না; সেগুলো WhatsApp-এই দেখুন।</p>
   <div class="card">${list.length?list.map(a=>{const f=a.form||{};const d=a.at?new Date(a.at):null;return `<div class="app"><div class="row" style="justify-content:space-between"><b style="font-size:17px">${esc(f.name)}</b><select data-status="${esc(a._id)}" aria-label="অবস্থা">${Object.entries(STATUS).map(([k,v])=>`<option value="${k}" ${(a.status||"new")===k?"selected":""}>${v}</option>`).join("")}</select></div>
    <div class="meta"><span class="sel">${esc(f.phone)}</span>${f.wa?` · WA <span class="sel">${esc(f.wa)}</span>`:""} · ${esc(f.course)} · ${esc(f.time)} · ${esc(f.exp)}</div>
-   <div class="meta">${esc(f.edu)}${f.eduYear?" ("+esc(f.eduYear)+")":""} · বয়স ${esc(f.age)}${f.area?" · "+esc(f.area):""}${a.test?` · টেস্ট ${bn(a.test.total)}/২০ → ${esc(a.test.rec)}`:""}</div>
+   <div class="meta">${esc(f.edu)}${f.eduYear?" ("+esc(f.eduYear)+")":""} · বয়স ${esc(f.age)}${f.area?" · "+esc(f.area):""}${a.test?` · টেস্ট ${bn(a.test.total)}/20 → ${esc(a.test.rec)}`:""}</div>
    ${f.msg?`<div style="font-size:14px">"${esc(f.msg)}"</div>`:""}<div class="meta">${d?d.toLocaleDateString("bn-BD")+" "+d.toLocaleTimeString("bn-BD",{hour:"2-digit",minute:"2-digit"}):""}</div></div>`}).join(""):`<p class="note" style="margin:0">এখনো কোনো আবেদন আসেনি। পেজটি শেয়ার করুন বা Facebook পোস্টে লিংক দিন।</p>`}</div>`}
 
 function render(top){const v=S.view;$("#app").innerHTML=v==="info"?vInfo():v==="form"?vForm():v==="test"?vTest():v==="submit"?vSubmit():vTeacher();
