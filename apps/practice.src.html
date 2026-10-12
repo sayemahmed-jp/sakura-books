@@ -128,7 +128,8 @@ const BOOKS=/*BOOKS*/null;
 const $=s=>document.querySelector(s);
 const esc=s=>String(s??"").replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
 const rb=s=>esc(s).replace(/\{([^|{}]+)\|([^{}]+)\}/g,"<ruby>$1<rt>$2</rt></ruby>");
-const reading=s=>String(s).replace(/\{([^|{}]+)\|([^{}]+)\}/g,"$2").replace(/[（）()]/g," ").replace(/〜/g,"");
+const TTS=/*TTS*/{};
+const reading=s=>{const t=TTS[s];return (t!=null?t:String(s).replace(/\{([^|{}]+)\|([^{}]+)\}/g,"$2")).replace(/[（）()]/g," ").replace(/〜/g,"")};
 const plain=s=>String(s).replace(/\{([^|{}]+)\|([^{}]+)\}/g,"$1");
 const bn=n=>String(n).replace(/\d/g,d=>"০১২৩৪৫৬৭৮৯"[d]);
 const store={get(k,d){try{const v=localStorage.getItem("sp."+k);return v==null?d:JSON.parse(v)}catch(e){return d}},set(k,v){try{localStorage.setItem("sp."+k,JSON.stringify(v))}catch(e){}}};
@@ -216,7 +217,7 @@ function vQuiz(u){if(!S.quiz||S.quiz.uid!==u.id)S.quiz=makeQuiz(u);const Q=S.qui
   return `<div class="card qbox"><div class="meter" aria-hidden="true"><i style="width:${Q.i/Q.items.length*100}%"></i></div><div class="fs">প্রশ্ন ${bn(Q.i+1)} / ${bn(Q.items.length)} · শব্দটি শোনো, তারপর অর্থ বেছে নাও</div>
    <button type="button" class="qplay" id="qPlay" aria-label="শব্দ শোনো">${ICON.play}</button>
    ${Q.picked!=null?`<div class="fj" style="font-size:30px">${rb(it.j)}</div>`:`<div class="fs">আবার শুনতে বোতামে চাপ দাও</div>`}
-   <div class="opts">${it.c.map((c,ci)=>`<button type="button" class="opt ${Q.picked!=null?(c===it.ok?"ok":ci===Q.picked?"ng":""):""}" data-qopt="${ci}" ${Q.picked!=null?"disabled":""}>${esc(c)}</button>`).join("")}</div>
+   <div class="opts">${it.c.map((c,ci)=>`<button type="button" class="opt ${Q.picked!=null?(c===it.ok?"ok":ci===Q.picked?"ng":""):""}" data-qopt="${ci}" ${Q.picked!=null?"disabled":""}>${rb(c)}</button>`).join("")}</div>
    ${Q.picked!=null?`<button type="button" class="btn" id="qNext">${Q.i+1<Q.items.length?"পরের প্রশ্ন":"ফল দেখো"}</button>`:""}</div>`}
 
 /* ---------- flashcards ---------- */
@@ -235,8 +236,8 @@ function startDeck(id){let ids;if(id==="due")ids=dueAll();else{const u=units(S.l
   ids=ids.sort(()=>Math.random()-.5).slice(0,30);S.deck={name:id,ids,i:0,done:0,again:0};S.flip=false;render()}
 function vStudy(){const D=S.deck;
   if(D.i>=D.ids.length){touch();return `<div class="card qbox"><div style="font-size:40px">お疲れさま！</div><p class="lead">${bn(D.done)}টি কার্ড দেখেছ। আবার দেখতে হবে ${bn(D.again)}টি। কাল আবার এসো, রিভিউয়ের কার্ড তৈরি থাকবে।</p><div class="row" style="justify-content:center"><button type="button" class="btn" id="deckBack">ডেকের তালিকা</button></div></div>`}
-  const c=ALLCARDS[D.ids[D.i]];const front=S.rev?`<div class="fb">${esc(c.b)}</div><div class="fs">${c.t==="k"?"কাঞ্জিটি কী?":"জাপানিতে কী বলে?"}</div>`:(c.t==="k"?`<div class="fk">${esc(c.k)}</div><div class="fs">অর্থ আর পড়া কী?</div>`:`<div class="fj">${esc(plain(c.j))}</div><div class="fs">অর্থ কী?</div>`);
-  const back=c.t==="k"?`<div class="fk" style="font-size:64px">${esc(c.k)}</div><div class="fb">${esc(c.b)}</div><div class="fs jp">オン: ${esc(c.on||"—")} · くん: ${esc(c.kun||"—")}</div><div class="jp" style="font-size:16px">${c.w.slice(0,2).map(([w,m])=>`${rb(w)} <span class="fs">${esc(m)}</span>`).join("<br>")}</div>`:`<div class="fj">${rb(c.j)}</div><div class="fb">${esc(c.b)}</div>`;
+  const c=ALLCARDS[D.ids[D.i]];const front=S.rev?`<div class="fb">${rb(c.b)}</div><div class="fs">${c.t==="k"?"কাঞ্জিটি কী?":"জাপানিতে কী বলে?"}</div>`:(c.t==="k"?`<div class="fk">${esc(c.k)}</div><div class="fs">অর্থ আর পড়া কী?</div>`:`<div class="fj">${esc(plain(c.j))}</div><div class="fs">অর্থ কী?</div>`);
+  const back=c.t==="k"?`<div class="fk" style="font-size:64px">${esc(c.k)}</div><div class="fb">${rb(c.b)}</div><div class="fs jp">オン: ${esc(c.on||"—")} · くん: ${esc(c.kun||"—")}</div><div class="jp" style="font-size:16px">${c.w.slice(0,2).map(([w,m])=>`${rb(w)} <span class="fs">${esc(m)}</span>`).join("<br>")}</div>`:`<div class="fj">${rb(c.j)}</div><div class="fb">${rb(c.b)}</div>`;
   return `<div class="row" style="justify-content:space-between;margin-block:16px 4px"><button type="button" class="btn line" id="deckBack" style="padding:6px 12px">‹ ফিরে যাও</button><span class="fs">${bn(D.i+1)} / ${bn(D.ids.length)}</span></div>
   <div class="meter" aria-hidden="true"><i style="width:${D.i/D.ids.length*100}%"></i></div>
   <div class="fc ${S.flip?"flip":""}"><div class="fc-in" id="flip" role="button" tabindex="0" aria-label="কার্ড উল্টাও"><div class="face">${front}</div><div class="face back">${back}</div></div></div>

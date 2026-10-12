@@ -305,7 +305,8 @@ const $=s=>document.querySelector(s);
 const store={get(k,d){try{const v=localStorage.getItem(k);return v==null?d:JSON.parse(v)}catch(e){return d}},set(k,v){try{localStorage.setItem(k,JSON.stringify(v))}catch(e){}}};
 const esc=s=>String(s??"").replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
 const rb=s=>esc(s).replace(/\{([^|{}]+)\|([^{}]+)\}/g,"<ruby>$1<rt>$2</rt></ruby>");
-const reading=s=>String(s).replace(/\{([^|{}]+)\|([^{}]+)\}/g,"$2").replace(/[（）()]/g," ").replace(/〜/g,"");
+const TTS=/*TTS*/{};
+const reading=s=>{const t=TTS[s];return (t!=null?t:String(s).replace(/\{([^|{}]+)\|([^{}]+)\}/g,"$2")).replace(/[（）()]/g," ").replace(/〜/g,"")};
 const plain=s=>String(s).replace(/\{([^|{}]+)\|([^{}]+)\}/g,"$1");
 const BN="০১২৩৪৫৬৭৮৯", bn=n=>String(n).replace(/\d/g,d=>BN[d]);
 function hash(s){let h=2166136261;for(const ch of s){h^=ch.charCodeAt(0);h=Math.imul(h,16777619)}return h>>>0}
@@ -341,7 +342,7 @@ const AV={'ラヒム':'rahim','ミン':'min','ゆい':'yui','田中先生':'sens
 const SECC={'会話':'c1','ことば':'c2','文法':'c3','漢字':'c4','読解':'c6','練習':'c5','ルール':'c3','ひらがな表':'c1','カタカナ表':'c1'};
 function secH(ja,bnT,extra){return `<div class="sec-h ${SECC[ja]||'c2'}"><h2>${ja}</h2><span>${bnT}</span><div class="sp"></div>${extra||""}</div>`}
 function tableHtml(rows){return `<div class="tw"><table>${rows.map((r,i)=>`<tr>${r.map(c=>i===0?`<th>${rb(c)}</th>`:`<td>${rb(c)}</td>`).join("")}</tr>`).join("")}</table></div>`}
-function vocabHtml(v){return `<div class="vocab">${v.map(([w,m])=>`<div class="vw"><div><div class="j">${rb(w)}</div><div class="b">${esc(m)}</div></div>${pbtn([[w]],plain(w))}</div>`).join("")}</div>`}
+function vocabHtml(v){return `<div class="vocab">${v.map(([w,m])=>`<div class="vw"><div><div class="j">${rb(w)}</div><div class="b">${rb(m)}</div></div>${pbtn([[w]],plain(w))}</div>`).join("")}</div>`}
 function quizHtml(u,key,list){key=key||u.id;list=list||u.ex;
   const ans=S.ans[key]||{};
   const items=list.map((q,i)=>{const ord=order(key+"-"+i,q.c.length);const picked=ans[i];
@@ -364,20 +365,20 @@ function unitHtml(u){
       <div class="ktitle">মূল ৪৬টি অক্ষর (清音)</div>${kanaGrid(H,k)}
       <div class="ktitle">゛ ও ゜ যুক্ত অক্ষর (濁音・半濁音)</div>${kanaGrid(D,k)}
       <div class="ktitle">ছোট ゃ ゅ ょ যুক্ত অক্ষর (拗音)</div>${kanaGrid(Y,k,"y")}</section>`;
-    body+=`<section class="sec">${secH("ルール","নিয়ম")}${u.notes.map((n,i)=>`<div class="gcard"><div class="gpt"><span class="num">${i+1}</span><h3>${rb(n.t)}</h3></div><p>${esc(n.b)}</p></div>`).join("")}</section>`;
+    body+=`<section class="sec">${secH("ルール","নিয়ম")}${u.notes.map((n,i)=>`<div class="gcard"><div class="gpt"><span class="num">${i+1}</span><h3>${rb(n.t)}</h3></div><p>${rb(n.b)}</p></div>`).join("")}</section>`;
     body+=`<section class="sec">${secH("ことば","নতুন শব্দ")}${vocabHtml(u.vocab)}</section>`;
   } else if(u.kind==="lesson"){
     const all=u.dialog.map(l=>[l[1],l[0]]);
     body+=`<section class="sec">${secH("会話","কথোপকথন",PRINT?"":`<button type="button" class="play" data-say='${esc(JSON.stringify(all))}' ${voice?"":"disabled"}>${PLAY} পুরোটা শুনুন</button>`)}<p class="scene">${esc(u.scene)}</p><div class="dlg">${u.dialog.map(l=>{const nm=plain(l[0]);const k=AV[nm]||'other';return `<div class="line ${k==='rahim'?'r':''}"><span class="av ${k}">${esc(AVI[nm]||nm.slice(0,1))}</span><div class="bub2"><div class="who">${rb(l[0])}</div><div class="say">${rb(l[1])}</div><div class="tr">${esc(l[2])}</div></div>${pbtn([[l[1],l[0]]])}</div>`}).join("")}</div></section>`;
     body+=`<section class="sec">${secH("ことば","নতুন শব্দ")}${vocabHtml(u.vocab)}</section>`;
-    body+=`<section class="sec c3">${secH("文法","ব্যাকরণ")}${u.grammar.map((g,i)=>`<article class="gcard"><div class="gpt"><span class="num">${i+1}</span><h3>${rb(g.pt)}</h3></div><p>${esc(g.bn)}</p>${g.table?tableHtml(g.table):""}<div class="exs">${g.ex.map(e=>`<div class="exl"><span class="j">${rb(e[0])}</span><span class="b">${esc(e[1])}</span></div>`).join("")}</div>${g.note?`<div class="note">${esc(g.note)}</div>`:""}</article>`).join("")}</section>`;
+    body+=`<section class="sec c3">${secH("文法","ব্যাকরণ")}${u.grammar.map((g,i)=>`<article class="gcard"><div class="gpt"><span class="num">${i+1}</span><h3>${rb(g.pt)}</h3></div><p>${rb(g.bn)}</p>${g.table?tableHtml(g.table):""}<div class="exs">${g.ex.map(e=>`<div class="exl"><span class="j">${rb(e[0])}</span><span class="b">${esc(e[1])}</span></div>`).join("")}</div>${g.note?`<div class="note">${rb(g.note)}</div>`:""}</article>`).join("")}</section>`;
     body+=`<section class="sec">${secH("漢字","কাঞ্জি")}${u.kanji.length?`<div class="kgrid">${u.kanji.map(k=>`<div class="kc"><div class="big">${k.k}</div><div class="mn">${esc(k.bn)}</div><div class="rd">音 <b>${esc(k.on)}</b></div><div class="rd">訓 <b>${esc(k.kun)}</b></div><div class="kw">${k.w.map(w=>`<div><span class="j">${rb(w[0])}</span> · ${esc(w[1])}</div>`).join("")}</div></div>`).join("")}</div>`:`<div class="knote">${esc(u.kanjiNote||"")}</div>`}</section>`;
   } else {
-    body+=u.sections.map(s=>`<section class="sec">${secH(esc(s.t),"")}<p style="margin:0 0 12px;max-width:68ch">${esc(s.bn)}</p>${s.table?tableHtml(s.table):""}</section>`).join("");
+    body+=u.sections.map(s=>`<section class="sec">${secH(esc(s.t),"")}<p style="margin:0 0 12px;max-width:68ch">${rb(s.bn)}</p>${s.table?tableHtml(s.table):""}</section>`).join("");
   }
   if(u.reading){body+=`<section class="sec c6">${secH("読解","পড়া ও বোঝা")}<div class="passage"><div class="passage-t">${rb(u.reading.t)}</div>${rb(u.reading.text)}</div>${quizHtml(u,u.id+"r",u.reading.qs)}</section>`}
   if(u.ex){body+=`<section class="sec">${secH("練習","অনুশীলন")}${quizHtml(u)}</section>`}
-  if(u.speak){body+=`<section class="sec"><div class="box speak"><h3>話してみよう · কথা বলো</h3><p>${esc(u.speak)}</p></div></section>`}
+  if(u.speak){body+=`<section class="sec"><div class="box speak"><h3>話してみよう · কথা বলো</h3><p>${rb(u.speak)}</p></div></section>`}
   if(u.culture){body+=`<section class="sec"><div class="box cult"><h3>日本のくらし · ${esc(u.culture.t)}</h3><p>${esc(u.culture.b)}</p></div></section>`}
   return head+body;
 }

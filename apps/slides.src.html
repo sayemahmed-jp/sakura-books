@@ -159,7 +159,8 @@ const BOOKS=/*BOOKS*/null;
 const $=s=>document.querySelector(s);
 const esc=s=>String(s??"").replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
 const rb=s=>esc(s).replace(/\{([^|{}]+)\|([^{}]+)\}/g,"<ruby>$1<rt>$2</rt></ruby>");
-const reading=s=>String(s).replace(/\{([^|{}]+)\|([^{}]+)\}/g,"$2").replace(/[（）()]/g," ").replace(/〜/g,"");
+const TTS=/*TTS*/{};
+const reading=s=>{const t=TTS[s];return (t!=null?t:String(s).replace(/\{([^|{}]+)\|([^{}]+)\}/g,"$2")).replace(/[（）()]/g," ").replace(/〜/g,"")};
 const plain=s=>String(s).replace(/\{([^|{}]+)\|([^{}]+)\}/g,"$1");
 const bn=n=>String(n).replace(/\d/g,d=>"০১২৩৪৫৬৭৮৯"[d]);
 function hash(s){let h=2166136261;for(const ch of s){h^=ch.charCodeAt(0);h=Math.imul(h,16777619)}return h>>>0}
@@ -220,22 +221,22 @@ function slidesFor(u){
     add("かな表",`<div class="hint">মূল অক্ষর (清音) ২/২</div>${kanaGrid(H.slice(30),k,5)}`);
     add("かな表",`<div class="hint">゛ ও ゜ (濁音・半濁音)</div>${kanaGrid(D,k,5)}`);
     add("かな表",`<div class="hint">ছোট ゃ ゅ ょ (拗音)</div>${kanaGrid(Y,k,9)}`);
-    u.notes.forEach(n=>add("ルール",`<div class="gpt">${rb(n.t)}</div><div class="gbn">${esc(n.b)}</div>`));
+    u.notes.forEach(n=>add("ルール",`<div class="gpt">${rb(n.t)}</div><div class="gbn">${rb(n.b)}</div>`));
   }
   if(u.kind==="lesson"){
     const dl=chunk(u.dialog,4);
     dl.forEach((c,ci)=>add("会話",`${ci===0?`<div class="scene">${esc(u.scene)}</div>`:""}<div><button type="button" class="play"${sayAttr(u.dialog.map(l=>[l[1],l[0]]))}>▶ পুরো কথোপকথন</button></div><div class="dl">${c.map(l=>{const nm=plain(l[0]);return `<div class="ln"><span class="av ${AV[nm]||""}">${esc(AVI[nm]||nm.slice(0,1))}</span><div><div class="who">${rb(l[0])}</div><div class="say"${sayAttr([[l[1],l[0]]])}>${rb(l[1])}</div><div class="tr">${esc(l[2])}</div></div></div>`}).join("")}</div>`,{part:dl.length>1?`${ci+1}/${dl.length}`:""}));
   }
-  if(u.vocab&&u.vocab.length){const vc=chunk(u.vocab,8);vc.forEach((c,ci)=>add("ことば",`<div class="vg">${c.map(([w,m])=>`<div class="vw"${sayAttr([[w]])}><div class="vj">${rb(w)}</div><div class="vb">${esc(m)}</div></div>`).join("")}</div>`,{part:`${ci+1}/${vc.length}`}))}
+  if(u.vocab&&u.vocab.length){const vc=chunk(u.vocab,8);vc.forEach((c,ci)=>add("ことば",`<div class="vg">${c.map(([w,m])=>`<div class="vw"${sayAttr([[w]])}><div class="vj">${rb(w)}</div><div class="vb">${rb(m)}</div></div>`).join("")}</div>`,{part:`${ci+1}/${vc.length}`}))}
   if(u.kind==="lesson"){
     u.grammar.forEach((g,gi)=>{
       const exs=`<div class="exl">${(g.ex||[]).map(([j,b])=>`<div class="ex1"><div class="exj"${sayAttr([[j]])}>${rb(j)}</div><div class="exb">${esc(b)}</div></div>`).join("")}</div>`;
-      const head=`<div class="gpt">${gi+1}. ${rb(g.pt)}</div><div class="gbn">${esc(g.bn)}</div>`;
-      if(g.table||g.note||(g.ex||[]).length>3){add("文法",head+(g.table?table(g.table):"")+(g.note?`<div class="gnote">${esc(g.note)}</div>`:""));if((g.ex||[]).length)add("例文",`<div class="gpt" style="font-size:30px">${rb(g.pt)}</div>${exs}`)}
+      const head=`<div class="gpt">${gi+1}. ${rb(g.pt)}</div><div class="gbn">${rb(g.bn)}</div>`;
+      if(g.table||g.note||(g.ex||[]).length>3){add("文法",head+(g.table?table(g.table):"")+(g.note?`<div class="gnote">${rb(g.note)}</div>`:""));if((g.ex||[]).length)add("例文",`<div class="gpt" style="font-size:30px">${rb(g.pt)}</div>${exs}`)}
       else add("文法",head+exs);
     });
-    if(u.kanji&&u.kanji.length){chunk(u.kanji,2).forEach((c,ci,a)=>add("漢字",`<div class="kg">${c.map(k=>`<div class="kc"><div class="kbig">${esc(k.k)}</div><div class="kinfo"><div><span class="lab">オン</span><span class="jp">${esc(k.on||"—")}</span></div><div><span class="lab kun">くん</span><span class="jp">${esc(k.kun||"—")}</span></div><div style="font-size:26px;font-weight:600">${esc(k.bn)}</div>${k.w.map(([w,m])=>`<div class="kw"${sayAttr([[w]])}>${rb(w)}<span>${esc(m)}</span></div>`).join("")}</div></div>`).join("")}</div>`,{part:`${ci+1}/${a.length}`}));
-      if(u.kanjiNote)add("漢字",`<div class="gbn">${esc(u.kanjiNote)}</div>`)}
+    if(u.kanji&&u.kanji.length){chunk(u.kanji,2).forEach((c,ci,a)=>add("漢字",`<div class="kg">${c.map(k=>`<div class="kc"><div class="kbig">${esc(k.k)}</div><div class="kinfo"><div><span class="lab">オン</span><span class="jp">${esc(k.on||"—")}</span></div><div><span class="lab kun">くん</span><span class="jp">${esc(k.kun||"—")}</span></div><div style="font-size:26px;font-weight:600">${esc(k.bn)}</div>${k.w.map(([w,m])=>`<div class="kw"${sayAttr([[w]])}>${rb(w)}<span>${rb(m)}</span></div>`).join("")}</div></div>`).join("")}</div>`,{part:`${ci+1}/${a.length}`}));
+      if(u.kanjiNote)add("漢字",`<div class="gbn">${rb(u.kanjiNote)}</div>`)}
     if(u.reading){
       add("読解",`<div class="ptitle">${rb(u.reading.t)}</div><div class="passage">${rb(u.reading.text)}</div>`);
       add("読解",`<div class="qs">${u.reading.qs.map((q,i)=>`<div class="q"><div class="qq"><span class="n">${i+1}</span>${rb(q.q)}</div>${optsHtml(q,u.id+"r-"+i)}</div>`).join("")}</div>`,{reveal:true});
@@ -244,7 +245,7 @@ function slidesFor(u){
   if(u.ex&&u.ex.length){const ec=chunk(u.ex.map((q,i)=>[q,i]),u.kind==="lesson"?3:4);ec.forEach((c,ci)=>add("練習",`<div class="qs">${c.map(([q,i])=>`<div class="q"><div class="qq"><span class="n">${i+1}</span>${rb(q.q)}</div>${optsHtml(q,u.id+"-"+i)}</div>`).join("")}</div>`,{reveal:true,part:`${ci+1}/${ec.length}`}))}
   if(u.speak)add("話そう",`<div class="box speak"><h3>話そう · জোড়ায় কথা বলো</h3>${rb(u.speak)}</div>`);
   if(u.culture)add("文化",`<div class="box cult"><h3>${rb(u.culture.t)}</h3>${esc(u.culture.b)}</div>`);
-  if(u.kind==="ref"){(u.sections||[]).forEach(sc=>add("付録",`<div class="gpt" style="font-size:34px">${rb(sc.t)}</div>${sc.bn?`<div class="gbn" style="font-size:21px">${esc(sc.bn)}</div>`:""}${sc.table?table(sc.table):""}${sc.items?`<div class="exl">${sc.items.map(x=>`<div class="ex1"><div class="exj" style="font-size:26px">${rb(Array.isArray(x)?x[0]:x)}</div>${Array.isArray(x)&&x[1]?`<div class="exb">${esc(x[1])}</div>`:""}</div>`).join("")}</div>`:""}`))}
+  if(u.kind==="ref"){(u.sections||[]).forEach(sc=>{const parts=sc.table&&sc.table.length>9?chunk(sc.table.slice(1),8).map(r=>[sc.table[0],...r]):[sc.table];parts.forEach((tb,pi)=>add("付録",`<div class="gpt" style="font-size:34px">${rb(sc.t)}</div>${sc.bn&&pi===0?`<div class="gbn" style="font-size:21px">${rb(sc.bn)}</div>`:""}${tb?table(tb):""}${sc.items&&pi===parts.length-1?`<div class="exl">${sc.items.map(x=>`<div class="ex1"><div class="exj" style="font-size:26px">${rb(Array.isArray(x)?x[0]:x)}</div>${Array.isArray(x)&&x[1]?`<div class="exb">${esc(x[1])}</div>`:""}</div>`).join("")}</div>`:""}`,{part:parts.length>1?`${pi+1}/${parts.length}`:""}))})}
   if(u.kind!=="ref"){const gs=u.kind==="lesson"?u.grammar.map(g=>rb(g.pt)):[];
     add("まとめ",`<div class="checks"><div>${esc(u.cando)}</div>${gs.slice(0,5).map(g=>`<div class="jp">${g}</div>`).join("")}</div><div class="box cult" style="font-size:22px;margin-top:auto"><b>বাড়ির কাজ:</b> বইয়ের এই পাঠের অনুশীলন শেষ করো, প্র্যাকটিস অ্যাপে কথোপকথন ৩ বার শোনো আর এই পাঠের ফ্ল্যাশকার্ড করো।</div>`)}
   return s;
@@ -278,7 +279,7 @@ function render(){
 }
 function fitBody(){const b=$("#body");if(!b)return;const inner=b.firstElementChild;
   const H=b.clientHeight;let f=1;
-  for(let n=0;n<8;n++){inner.style.width=(100/f)+"%";inner.style.transform=f<1?`scale(${f})`:"";const h=inner.scrollHeight*f;if(h<=H+1)break;f=Math.max(.4,f*H/h*.98)}}
+  for(let n=0;n<8;n++){inner.style.width=(100/f)+"%";inner.style.transform=f<1?`scale(${f})`:"";const h=inner.scrollHeight*f;if(h<=H+1)break;f=Math.max(.4,f*H/h*.98)}window.__fit=f}
 function scale(){const fit=$("#fit"),st=$("#stage");const k=Math.min(fit.clientWidth/1280,fit.clientHeight/720);st.style.transform=`translate(-50%,-50%) scale(${k})`}
 function fillLessons(){$("#lesson").innerHTML=units().map(u=>`<option value="${u.id}">${esc(label(u))} · ${esc(plain(u.title))}</option>`).join("")}
 function openUnit(id,i=0){S.uid=id;SL=slidesFor(unit());S.i=i;S.rev=false;render()}
