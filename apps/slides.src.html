@@ -41,7 +41,24 @@ select{border:1.5px solid var(--line);border-radius:10px;padding:5px 8px;backgro
 .ctrl{display:flex;align-items:center;gap:10px;flex-wrap:wrap;justify-content:center;width:100%}
 .nav{border:0;background:var(--sakura);color:#fff;border-radius:999px;width:44px;height:44px;font-size:20px;display:grid;place-items:center}
 .nav:disabled{opacity:.35;cursor:default}
-.count{font-variant-numeric:tabular-nums;font-weight:600;color:var(--muted);min-width:70px;text-align:center}
+.count{font-variant-numeric:tabular-nums;font-weight:600;color:var(--muted);min-width:70px;text-align:center;line-height:1.3}
+.count small{display:block;font-size:12px;font-weight:500}
+.allbtn{border:0;background:var(--ink);color:#fff;border-radius:999px;padding:5px 14px;font-weight:700;font-size:14px;white-space:nowrap}
+.lsel{display:flex;align-items:center;gap:6px;font-size:13px;font-weight:600;color:var(--muted)}
+.ov{position:fixed;inset:0;z-index:20;background:var(--bg);overflow:auto;padding:calc(env(safe-area-inset-top,0px) + 16px) 16px 32px}
+.ov-in{max-width:1100px;margin:0 auto;display:grid;gap:14px}
+.ov-h{display:flex;align-items:center;gap:12px;flex-wrap:wrap}
+.ov-h h2{font-family:var(--f-display);font-size:28px;margin:0;flex:1}
+.ov-sum{color:var(--muted);font-size:14px}
+.ov h3{font-size:16px;margin:14px 0 0;color:var(--sakura-deep)}
+.ov-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(230px,1fr));gap:10px}
+.ov-card{border:1px solid var(--line);background:var(--paper);border-radius:14px;padding:12px 14px;text-align:left;display:grid;gap:2px}
+.ov-card:hover{border-color:var(--sakura)}
+.ov-card[aria-current="true"]{border:2px solid var(--sakura);background:var(--blush)}
+.ov-card b{font-family:var(--f-jp);font-size:13px;color:var(--sakura-deep)}
+.ov-card span{font-family:var(--f-jp);font-size:16px;line-height:1.5}
+.ov-card small{color:var(--muted);font-size:12px}
+.nextl{border:1.5px solid var(--sakura);background:var(--paper);color:var(--sakura-deep);border-radius:999px;padding:6px 14px;font-weight:700;font-size:14px}
 .chips{display:flex;gap:6px;flex-wrap:wrap;justify-content:center}
 .chip{border:1px solid var(--line);background:var(--paper);border-radius:999px;padding:2px 10px;font-size:13px;font-family:var(--f-jp)}
 .chip[aria-current="true"]{background:var(--ink);color:#fff;border-color:var(--ink)}
@@ -140,7 +157,7 @@ th{background:var(--ai-soft);color:var(--ai)}
 <header class="bar">
   <div class="brand"><span id="logo"></span>さくら授業スライド<small>さくら日本語学院</small></div>
   <div class="seg" role="group" aria-label="Level"><button type="button" data-lv="N5">N5</button><button type="button" data-lv="N4">N4</button></div>
-  <label class="sr" for="lesson" hidden>পাঠ</label><select id="lesson" aria-label="পাঠ বেছে নিন"></select>
+  <button type="button" class="allbtn" id="allBtn">☰ সব পাঠ</button><label class="lsel" for="lesson">পাঠ:<select id="lesson"></select></label>
   <div class="sp"></div>
   <button type="button" class="tog" id="tFuri">ふりがな<kbd>F</kbd></button>
   <button type="button" class="tog" id="tTr">বাংলা<kbd>T</kbd></button>
@@ -148,6 +165,7 @@ th{background:var(--ai-soft);color:var(--ai)}
   <button type="button" class="tog" id="tNote">শিক্ষকের নোট<kbd>N</kbd></button>
   <button type="button" class="tog" id="tFull">পূর্ণ পর্দা</button>
 </header>
+<div class="ov" id="ov" hidden></div>
 <main class="main">
   <div class="fit" id="fit"><div class="stage" id="stage"></div></div>
   <div class="ctrl"><button type="button" class="nav" id="prev" aria-label="আগের স্লাইড">‹</button><span class="count" id="count"></span><button type="button" class="nav" id="next" aria-label="পরের স্লাইড">›</button><div class="chips" id="chips"></div></div>
@@ -265,8 +283,9 @@ function render(){
     st.innerHTML=`<div class="sl" style="--c:${sec.c}"><div class="sl-top"><span class="tag">${sl.sec}</span><span class="tag-bn">${sec.bn}${sl.part?` · ${bn(sl.part)}`:""}</span><span class="lno">${label(u)} ${plain(u.title)}</span></div><div class="body" id="body"><div class="inner">${sl.html}</div></div><div class="foot"><span>さくら日本語 ${S.lv}</span><span>${S.i+1} / ${SL.length}</span></div></div>`;
     fitBody();
   }
-  $("#count").textContent=`${S.i+1} / ${SL.length}`;
-  $("#prev").disabled=S.i===0;$("#next").disabled=S.i===SL.length-1;
+  const L=units(),li=L.findIndex(x=>x.id===u.id);$("#count").innerHTML=`স্লাইড ${bn(S.i+1)} / ${bn(SL.length)}<small>${S.lv} · ইউনিট ${bn(li+1)} / ${bn(L.length)}</small>`;
+  $("#prev").disabled=S.i===0&&li===0;$("#next").disabled=S.i===SL.length-1&&li===L.length-1;
+  $("#next").setAttribute("aria-label",S.i===SL.length-1?"পরের পাঠ":"পরের স্লাইড");
   const secs=[...new Set(SL.map(x=>x.sec))];
   $("#chips").innerHTML=secs.map(x=>`<button type="button" class="chip" data-sec="${x}" aria-current="${x===sl.sec}">${x}</button>`).join("");
   $("#note").hidden=!S.note;$("#note").innerHTML=`<b>শিক্ষকের নোট</b><span>${sec.note}${sl.reveal?" (R = উত্তর দেখাও)":""}</span>`;
@@ -283,20 +302,31 @@ function fitBody(){const b=$("#body");if(!b)return;const inner=b.firstElementChi
 function scale(){const fit=$("#fit"),st=$("#stage");const k=Math.min(fit.clientWidth/1280,fit.clientHeight/720);st.style.transform=`translate(-50%,-50%) scale(${k})`}
 function fillLessons(){$("#lesson").innerHTML=units().map(u=>`<option value="${u.id}">${esc(label(u))} · ${esc(plain(u.title))}</option>`).join("")}
 function openUnit(id,i=0){S.uid=id;SL=slidesFor(unit());S.i=i;S.rev=false;render()}
-function go(d){const n=S.i+d;if(n<0||n>=SL.length)return;S.i=n;S.rev=false;render()}
+function go(d){const n=S.i+d;const L=units(),li=L.findIndex(x=>x.id===S.uid);
+  if(n>=SL.length){if(li<L.length-1)openUnit(L[li+1].id);return}
+  if(n<0){if(li>0){S.uid=L[li-1].id;SL=slidesFor(unit());openUnit(L[li-1].id,SL.length-1)}return}
+  S.i=n;S.rev=false;render()}
+function showAll(){const ov=$("#ov");let tot=0;const sec=lv=>{const L=BOOKS[lv];let h=`<h3>${lv} · ${bn(L.length)}টি ইউনিট</h3><div class="ov-grid">`;
+  L.forEach((u,i)=>{const n=slidesFor(u).length;tot+=n;h+=`<button type="button" class="ov-card" data-open="${lv}|${u.id}" aria-current="${lv===S.lv&&u.id===S.uid}"><b>${bn(i+1)}. ${esc(label(u))}</b><span>${rb(u.title)}</span><small>${esc(u.titleBn)} · ${bn(n)}টি স্লাইড</small></button>`});return h+`</div>`};
+  const body=sec("N5")+sec("N4");
+  ov.innerHTML=`<div class="ov-in"><div class="ov-h"><h2>সব পাঠ</h2><button type="button" class="tog" id="ovClose">বন্ধ করো ✕</button></div><div class="ov-sum">দুই বই মিলিয়ে মোট ${bn(tot)}টি স্লাইড। যে পাঠ পড়াবেন তাতে চাপ দিন।</div>${body}</div>`;
+  ov.hidden=false;ov.scrollTop=0}
 
 document.addEventListener("click",e=>{
   const sayEl=e.target.closest("[data-say]");if(sayEl){say(JSON.parse(sayEl.dataset.say));return}
   const b=e.target.closest("button");if(!b)return;
   if(b.dataset.lv){S.lv=b.dataset.lv;fillLessons();openUnit(units()[0].id);return}
   if(b.dataset.sec){S.i=SL.findIndex(x=>x.sec===b.dataset.sec);S.rev=false;render();return}
+  if(b.id==="allBtn"){showAll();return}
+  if(b.id==="ovClose"){$("#ov").hidden=true;return}
+  if(b.dataset.open){const [lv,id]=b.dataset.open.split("|");S.lv=lv;fillLessons();openUnit(id);$("#ov").hidden=true;return}
   if(b.id==="prev")go(-1);else if(b.id==="next")go(1);
   else if(b.id==="tFuri"){S.furi=!S.furi;render()}else if(b.id==="tTr"){S.tr=!S.tr;render()}
   else if(b.id==="tRev"){S.rev=!S.rev;render()}else if(b.id==="tNote"){S.note=!S.note;store.set("note",S.note);render()}
   else if(b.id==="tFull"){try{document.fullscreenElement?document.exitFullscreen():document.documentElement.requestFullscreen().catch(()=>{})}catch(err){}}
 });
 $("#lesson").addEventListener("change",e=>openUnit(e.target.value));
-document.addEventListener("keydown",e=>{if(e.target.matches("select,input"))return;const k=e.key;
+document.addEventListener("keydown",e=>{if(e.target.matches("select,input"))return;const k=e.key;if(!$("#ov").hidden){if(k==="Escape")$("#ov").hidden=true;return}
   if(k==="ArrowRight"||k===" "||k==="PageDown"){e.preventDefault();go(1)}else if(k==="ArrowLeft"||k==="PageUp"){e.preventDefault();go(-1)}
   else if(/^[fF]$/.test(k)){S.furi=!S.furi;render()}else if(/^[tT]$/.test(k)){S.tr=!S.tr;render()}else if(/^[rR]$/.test(k)){S.rev=!S.rev;render()}else if(/^[nN]$/.test(k)){S.note=!S.note;store.set("note",S.note);render()}
   else if(k==="Home"){S.i=0;render()}else if(k==="End"){S.i=SL.length-1;render()}});
@@ -305,6 +335,6 @@ new ResizeObserver(scale).observe($("#fit"));
 (function boot(){const h=(location.hash||"").slice(1);const m=h.match(/^(n5|n4)(.+)$/);const pos=store.get("pos",null);
   if(m){S.lv=m[1].toUpperCase();fillLessons();openUnit(units().some(u=>u.id===m[2])?m[2]:units()[0].id)}
   else if(pos&&BOOKS[pos.lv]){S.lv=pos.lv;fillLessons();openUnit(units().some(u=>u.id===pos.uid)?pos.uid:units()[0].id,pos.i||0)}
-  else{fillLessons();openUnit(units()[0].id)}
+  else{fillLessons();openUnit(units()[0].id);showAll()}
   if(document.fonts&&document.fonts.ready)document.fonts.ready.then(()=>render());})();
 </script>
